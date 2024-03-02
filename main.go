@@ -1,6 +1,7 @@
 package main
 
 import (
+  "os"
   "net/http"
   "github.com/gin-gonic/gin"
 )
@@ -73,7 +74,12 @@ func createNote(c *gin.Context) {
     return
   }
 
-  notes = append(notes, newNote)
+  _, err := os.Create(newNote.FileName)
+  if err != nil {
+    c.IndentedJSON(http.StatusInternalServerError, newNote)
+    return
+  }
+  //notes = append(notes, newNote)
   c.IndentedJSON(http.StatusCreated, newNote)
 }
 
