@@ -7,25 +7,24 @@ import (
 )
 
 type note struct {
-  ID string `json:"id"`
   FileName string `json:"filename"`
   Content string `json:"content"`
 }
 
 // Test data
 var notes = []note{
-  {ID: "1", FileName: "NoteOne", Content:"Some text"},
-  {ID: "2", FileName: "NoteTwo", Content:"Some two text"},
-  {ID: "3", FileName: "NoteThree", Content:"Some three text"},
+  {FileName: "NoteOne", Content:"Some text"},
+  {FileName: "NoteTwo", Content:"Some two text"},
+  {FileName: "NoteThree", Content:"Some three text"},
 }
 
 func main() {
   router := gin.Default()
-  router.GET("/notes", getNotes)
-  router.GET("/notes/:id", getNoteByID)
-  router.POST("/notes/:id", createNote)
-  router.PATCH("/notes/:id", updateNote)
-  router.DELETE("/notes/:id", deleteNote)
+
+  router.POST("/notes/", createNote)
+  router.GET("/notes/", getNote)
+  router.PATCH("/notes/", updateNote)
+  router.DELETE("/notes/", deleteNote)
 
   router.Run("localhost:8080")
 }
@@ -34,41 +33,41 @@ func main() {
 Delete a note.
 */
 func deleteNote(c *gin.Context) {
-  id := c.Param("id")
-  for i, n := range notes {
-    if n.ID == id {
-      notes = append(notes[:i], notes[i+1:]...)
-      c.IndentedJSON(http.StatusOK, n)
-      return
-    }
+  if err := os.Remove(c.Param("filename")); err != nil {
+    c.IndentedJSON(http.StatusInternalServerError, "Failed to delete note.")
+    return
   }
-  c.IndentedJSON(http.StatusNotFound, gin.H{"message": "note not found"})
+
+  c.IndentedJSON(http.StatusOK, "Deleted note.")
+  return
 }
 
 /*
 Update an existing note.
 */
 func updateNote(c *gin.Context) {
-  id := c.Param("id")
-  for i, n := range notes {
-    if n.ID == id {
-      var updatedNote note
-      if err := c.BindJSON(&updatedNote); err != nil {
-        return
-      }
-      notes[i] = updatedNote
-      c.IndentedJSON(http.StatusOK, updatedNote)
-      return
-    }
+
+  // Build note struct from request
+  var updatedNote note
+  if err := c.BindJSON(&updatedNote); err != nil {
+    c.IndentedJSON(http.StatusInternalServerError, updatedNote)
+    return
   }
-  c.IndentedJSON(http.StatusNotFound, gin.H{"message": "note not found"})
+  
+  // Write to file
+  if err := os.WriteFile(updatedNote.FileName, []byte(updatedNote.Content), 0666); err != nil {
+    c.IndentedJSON(http.StatusInternalServerError, updatedNote)
+    return
+  }
+  
+  c.IndentedJSON(http.StatusOK, updatedNote)
 }
 
 /*
 Create a new note.
 */
 func createNote(c *gin.Context) {
- 
+
   var newNote note
 
   if err := c.BindJSON(&newNote); err != nil {
@@ -94,13 +93,19 @@ func getNotes(c *gin.Context) {
 /*
 Get a single note by id.
 */
-func getNoteByID(c *gin.Context){
-  id := c.Param("id")
-  for _, n := range notes {
-    if n.ID == id {
-      c.IndentedJSON(http.StatusOK, n)
-      return
-    }
+func getNote(c *gin.Context){
+
+  // Grab content from file
+  content, err := os.ReadFile(c.Param("filename"))
+  if err != nil {
+    return
   }
-  c.IndentedJSON(http.StatusNotFound, gin.H{"message": "note not found"})
+
+  // Build note struct
+  aNote := note {
+    FileName: c.Param("filename"),
+    Content: string(content),
+  }
+
+  c.IndentedJSON(http.StatusOK, aNote)
 }
