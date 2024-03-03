@@ -68,19 +68,20 @@ func updateNote(c *gin.Context) {
 Create a new note.
 */
 func createNote(c *gin.Context) {
+ 
   var newNote note
 
   if err := c.BindJSON(&newNote); err != nil {
     return
   }
 
-  _, err := os.Create(newNote.FileName)
-  if err != nil {
+  if err := os.WriteFile(newNote.FileName, []byte(newNote.Content), 0666); err != nil {
     c.IndentedJSON(http.StatusInternalServerError, newNote)
     return
   }
-  //notes = append(notes, newNote)
+
   c.IndentedJSON(http.StatusCreated, newNote)
+
 }
 
 /*
