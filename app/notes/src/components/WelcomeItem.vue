@@ -1,5 +1,6 @@
+
 <template>
-  <div class="item">
+  <div id="item" class="item">
     <i>
       <slot name="icon"></slot>
     </i>
@@ -9,6 +10,9 @@
       </h3>
       <slot></slot>
     </div>
+  </div>
+  <div id='content'>
+    <p>This is content</p>
   </div>
 </template>
 
@@ -84,3 +88,11 @@ h3 {
   }
 }
 </style>
+
+<script setup>
+import { marked } from 'marked';
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('content').innerHTML = marked.parse('# Marked in browser\n\nRendered by **marked**.');
+});
+
+</script>
