@@ -1,5 +1,8 @@
 <template>
   <div>
+    <textarea v-model="inputValue" @input="handleInputChange"></textarea>
+  </div>
+  <div id="rendered">
   </div>
 </template>
 
@@ -7,6 +10,18 @@
 </style>
 
 <script>
-document.getElementById('content').innerHTML =
-      marked.parse('# Marked in browser\n\nRendered by **marked**.');
+import { marked } from 'marked';
+
+export default {
+  data() {
+    return {
+      inputValue: ''
+    };
+  },
+  methods: {
+    handleInputChange() {
+      document.getElementById('rendered').innerHTML = marked(this.inputValue)
+    }
+  }
+};
 </script>
