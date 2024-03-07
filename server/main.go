@@ -4,6 +4,7 @@ import (
   "os"
   "net/http"
   "github.com/gin-gonic/gin"
+  "github.com/gin-contrib/static"
 )
 
 type note struct {
@@ -20,6 +21,9 @@ var notes = []note{
 
 func main() {
   router := gin.Default()
+
+  // Serve Vue.js frontend
+  router.Use(static.Serve("/", static.LocalFile("/usr/src/app/dist", false)))
 
   router.POST("/notes/", createNote)
   router.GET("/notes/", getNote)
