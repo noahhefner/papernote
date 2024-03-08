@@ -3,11 +3,7 @@ GITSHA = $(shell git rev-parse --short HEAD)
 TAG_COMMIT = $(REPO):$(GITSHA)
 TAG_LATEST=$(REPO):latest
 
-all:dev
-
-.PHONY:dev
-dev:
-	go run .
+all:run
 
 .PHONY:build
 build:

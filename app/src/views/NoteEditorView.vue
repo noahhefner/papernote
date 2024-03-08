@@ -1,10 +1,11 @@
 <template>
   <div>
-    <textarea v-model="inputValue" @input="handleInputChange"></textarea>
+    <v-textarea v-model="inputValue" @input="handleInputChange">
+    </v-textarea>
+    <div id="rendered">
+    </div>
+    <button @click="saveNote">Save</button>
   </div>
-  <div id="rendered">
-  </div>
-  <button @click="saveNote">Save</button>
 </template>
 
 <style>
