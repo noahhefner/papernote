@@ -1,0 +1,50 @@
+<template>
+  <v-form>
+    <v-container fluid>
+      <v-row
+        justify="center">
+        <v-col
+          cols="3"
+          align="center"
+          align-self="center">
+          <v-text-field 
+            label="Username"
+            required>
+          </v-text-field>
+        </v-col>
+      </v-row>
+      <v-row
+        justify="center">
+        <v-col
+         cols="3"
+         align="center"
+         align-self="center">
+          <v-text-field 
+            label="Password"
+            required>
+          </v-text-field>
+        </v-col>
+      </v-row>
+      <v-row
+        justify="center">
+        <v-col
+          cols="3"
+          align="center"
+          align-self="center">
+          <v-btn 
+            variant="flat"
+            color="#5865f2">
+            Login
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
+</template>
+
+<style>
+
+</style>
+
+<script>
+</script>
