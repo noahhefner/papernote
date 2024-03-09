@@ -1,14 +1,19 @@
 <template>
-  <div>
-    <v-textarea v-model="inputValue" @input="handleInputChange">
-    </v-textarea>
-    <div id="rendered">
-    </div>
-    <button @click="saveNote">Save</button>
-  </div>
+  <v-row>
+    <v-col cols="12" sm="6" md="6" lg="6">
+      <v-textarea
+        v-model="inputValue" 
+        @input="handleInputChange"
+        auto-grow>
+      </v-textarea>
+    </v-col>
+    <v-col id="rendered" cols="6" sm="12" md="6" lg="6">
+    </v-col>
+  </v-row>
 </template>
 
 <style>
+
 </style>
 
 <script>

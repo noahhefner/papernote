@@ -1,3 +1,30 @@
+<template>
+  <v-container fluid>
+    <v-app-bar :elevation="2">
+      <template v-slot:prepend>
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      </template>
+      <v-app-bar-title>Notes</v-app-bar-title>
+      <button @click="saveNote">Save</button>
+    </v-app-bar>
+    <v-row>
+      <v-col cols="12" md="6">
+        <v-textarea v-model="inputValue" @input="handleInputChange">
+        </v-textarea>
+      </v-col>
+      <v-col cols="12" md="6">
+        <div id="rendered">
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+
+
+
+
+
 # notes
 
 This template should help get you started developing with Vue 3 in Vite.
