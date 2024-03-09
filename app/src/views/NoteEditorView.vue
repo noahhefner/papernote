@@ -1,13 +1,39 @@
 <template>
-  <v-row>
-    <v-col cols="12" sm="6" md="6" lg="6">
+  <v-form>
+    <v-container fluid>
+      <v-row>
+        <v-col
+          cols="11"
+          align-self="center">
+          <v-text-field 
+            label="File Name"
+            required>
+          </v-text-field>
+        </v-col>
+        <v-col
+         cols="1"
+         align-self="center">
+          <v-btn 
+            variant="flat" 
+            color="#5865f2" 
+            @click="saveNote">
+            Save
+          </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
+  <v-row class="bg">
+    <v-col cols="6">
       <v-textarea
         v-model="inputValue" 
         @input="handleInputChange"
-        auto-grow>
+        auto-grow
+        :rows=16
+        >
       </v-textarea>
     </v-col>
-    <v-col id="rendered" cols="6" sm="12" md="6" lg="6">
+    <v-col id="rendered" cols="6">
     </v-col>
   </v-row>
 </template>
