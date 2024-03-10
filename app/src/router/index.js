@@ -6,14 +6,19 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/editor',
-      name: 'editor',
-      component: NoteEditorView
-    },
-    {
       path: '/login',
       name: 'login',
       component: LoginView
+    },
+    //{
+    //  path: '/:user',
+    //  name: 'noteIndex',
+    //  component: NoteIndexView
+    //},
+    {
+      path: '/:user/:filename',
+      name: 'editor',
+      component: NoteEditorView
     }
   ]
 })

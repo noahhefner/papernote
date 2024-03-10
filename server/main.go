@@ -12,11 +12,8 @@ type note struct {
   Content string `json:"content"`
 }
 
-// Test data
-var notes = []note{
-  {FileName: "NoteOne", Content:"Some text"},
-  {FileName: "NoteTwo", Content:"Some two text"},
-  {FileName: "NoteThree", Content:"Some three text"},
+type content struct {
+  Content string `json:"content"`
 }
 
 func main() {
@@ -25,10 +22,10 @@ func main() {
   // Serve Vue.js frontend
   router.Use(static.Serve("/", static.LocalFile("/usr/src/app/dist", false)))
 
-  router.POST("/notes/", createNote)
-  router.GET("/notes/", getNote)
-  router.PATCH("/notes/", updateNote)
-  router.DELETE("/notes/", deleteNote)
+  router.POST("/:user/notes/:filename", createNote)
+  router.GET("/:user/notes/:filename", getNoteByFilename)
+  router.PATCH("/:user/notes/:filename", updateNote)
+  router.DELETE("/:user/notes/:filename", deleteNote)
 
   router.Run("0.0.0.0:8080")
 }
@@ -37,7 +34,8 @@ func main() {
 Delete a note.
 */
 func deleteNote(c *gin.Context) {
-  if err := os.Remove(c.Param("filename")); err != nil {
+  var filePath = c.Param("user") + "/" + c.Param("filename")
+  if err := os.Remove(filePath); err != nil {
     c.IndentedJSON(http.StatusInternalServerError, "Failed to delete note.")
     return
   }
@@ -72,32 +70,37 @@ Create a new note.
 */
 func createNote(c *gin.Context) {
 
-  var newNote note
+  var noteContent content
 
-  if err := c.BindJSON(&newNote); err != nil {
+  if err := c.BindJSON(&noteContent); err != nil {
     return
   }
 
-  if err := os.WriteFile(newNote.FileName, []byte(newNote.Content), 0666); err != nil {
-    c.IndentedJSON(http.StatusInternalServerError, newNote)
+  if err := os.Chdir(c.Param("user")); err != nil {
+    c.IndentedJSON(http.StatusNotFound, c.Param("user"))
     return
   }
 
-  c.IndentedJSON(http.StatusCreated, newNote)
+  if err := os.WriteFile(c.Param("filename"), []byte(noteContent.Content), 0666); err != nil {
+    c.IndentedJSON(http.StatusInternalServerError, noteContent)
+    return
+  }
+
+  c.IndentedJSON(http.StatusCreated, noteContent)
 
 }
 
 /*
 Get all notes.
 */
-func getNotes(c *gin.Context) {
-  c.IndentedJSON(http.StatusOK, notes)
-}
+//func getNotes(c *gin.Context) {
+//  c.IndentedJSON(http.StatusOK, notes)
+//}
 
 /*
 Get a single note by id.
 */
-func getNote(c *gin.Context){
+func getNoteByFilename(c *gin.Context){
 
   // Grab content from file
   content, err := os.ReadFile(c.Param("filename"))
