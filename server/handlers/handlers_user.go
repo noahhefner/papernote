@@ -3,6 +3,7 @@ package handlers
 import (
     "net/http"
     "github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
     "noahhefner/notes/models"
     "noahhefner/notes/database"
 )
@@ -22,6 +23,15 @@ func AddUser(c *gin.Context) {
         c.JSON(http.StatusBadRequest, gin.H{"error": "username already exists"})
         return
     }
+
+    // Hash the users password before storing
+    hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.MinCost)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+    newUser.Password = string(hashedPassword)
 
     // Insert the user into the database
     if err := database.InsertUser(newUser); err != nil {

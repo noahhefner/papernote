@@ -7,6 +7,7 @@ import (
 
   "noahhefner/notes/database"
   "noahhefner/notes/handlers"
+  "noahhefner/notes/middlewares"
 
 )
 
@@ -25,16 +26,25 @@ func main() {
   // Serve Vue.js frontend
   router.Use(static.Serve("/", static.LocalFile("/usr/src/app/dist", false)))
 
-  // Note routes
-  router.POST("/notes", handlers.CreateNote)
-  router.GET("/notes", handlers.GetNoteByFilename)
-  router.PATCH("/notes", handlers.UpdateNote)
-  router.DELETE("/notes", handlers.DeleteNote)
+  // Note routes requiring auth
+  authorized := router.Group("/")
 
-  // User routes
+  authorized.Use(middlewares.AuthMiddleware()) 
+  {
+    
+    authorized.POST("/notes", handlers.CreateNote)
+    authorized.GET("/notes", handlers.GetNoteByFilename)
+    authorized.PATCH("/notes", handlers.UpdateNote)
+    authorized.DELETE("/notes", handlers.DeleteNote)
+
+    authorized.GET("/users/:username", handlers.GetUser)
+
+  }
+
+  // No auth required
   router.POST("/login", handlers.Login)
 	router.POST("/users", handlers.AddUser)
-	router.GET("/users/:username", handlers.GetUser)
+	
 
   router.Run("0.0.0.0:8080")
 

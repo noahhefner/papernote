@@ -31,16 +31,14 @@ func CreateNote(c *gin.Context) {
 	  return
 	}
 
-	// Change dir based on JWT, can extract user id from token
-    /*
-	err = os.Chdir(c.Param("user"))
+	err = os.Chdir(c.GetString("username"))
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusNotFound, 
 		errorMessage{Message: "User not found: " + c.Param("user")},
 	  )
 	  return
-	}*/
+	}
   
 	err = os.WriteFile(createdNote.FileName, []byte(createdNote.Content), 0666)
 	if err != nil {
@@ -60,20 +58,18 @@ func CreateNote(c *gin.Context) {
   */
   func GetNoteByFilename(c *gin.Context){
 
-	// Change dir based on JWT, can extract user id from token
-	/*
-	err := os.Chdir(c.Param("user"))
+	err := os.Chdir(c.GetString("username"))
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusNotFound, 
 		errorMessage{Message: "User not found: " + c.Param("user")},
 	  )
 	  return
-	}*/
+	}
   
 	var fileNameRequested fileName
 
-	err := c.BindJSON(&fileNameRequested)
+	err = c.BindJSON(&fileNameRequested)
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusInternalServerError, 
@@ -104,20 +100,18 @@ func CreateNote(c *gin.Context) {
   */
   func UpdateNote(c *gin.Context) {
   
-	// Change dir based on JWT, can extract user id from token
-	/*
-	err := os.Chdir(c.Param("user"))
+	err := os.Chdir(c.GetString("username"))
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusNotFound, 
 		errorMessage{Message: "User not found: " + c.Param("user")},
 	  )
 	  return
-	}*/
+	}
   
 	var noteToUpdate models.Note
   
-	err := c.BindJSON(&noteToUpdate)
+	err = c.BindJSON(&noteToUpdate)
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusInternalServerError, 
@@ -143,20 +137,18 @@ func CreateNote(c *gin.Context) {
   */
   func DeleteNote(c *gin.Context) {
   
-	// Change dir based on JWT, can extract user id from token
-	/*
-	err := os.Chdir(c.Param("user"))
+	err := os.Chdir(c.GetString("username"))
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusNotFound, 
 		errorMessage{Message: "User not found: " + c.Param("user")},
 	  )
 	  return
-	}*/
+	}
 
 	var fileNameRequested fileName
 
-	err := c.BindJSON(&fileNameRequested)
+	err = c.BindJSON(&fileNameRequested)
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusInternalServerError, 

@@ -3,6 +3,7 @@ package middlewares
 import (
 	"net/http"
 	"time"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/dgrijalva/jwt-go.v3"
@@ -71,6 +72,8 @@ func GenerateJWT(username string) (string, error) {
 		return "", err
 	}
 
+	fmt.Print(tokenString)
+
 	return tokenString, nil
 }
 
@@ -79,11 +82,16 @@ func AuthenticateUser(username string, password string) bool {
 
 	user, err := database.GetUserByUsername(username)
 	if err != nil {
+		fmt.Print("user not found")
 		return false
 	}
 
+	fmt.Print(user.Password)
+	fmt.Print(password)
+
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
+		fmt.Print("failed password compare")
 		return false
 	}
 
