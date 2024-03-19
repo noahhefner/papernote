@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"os"
+	"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"noahhefner/notes/models"
@@ -62,37 +63,86 @@ func CreateNote(c *gin.Context) {
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusNotFound, 
-		errorMessage{Message: "User not found: " + c.Param("user")},
+		errorMessage{Message: "User not found"},
 	  )
 	  return
 	}
   
-	var fileNameRequested fileName
+	var fileNameRequested = c.Param("filename")
 
-	err = c.BindJSON(&fileNameRequested)
-	if err != nil {
-	  c.IndentedJSON(
-		http.StatusInternalServerError, 
-		errorMessage{Message: "Unmarshalling request data failed."},
-	  )
-	  return
-	}
-
-	content, err := os.ReadFile(fileNameRequested.FileName)
+	content, err := os.ReadFile(fileNameRequested)
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusNotFound, 
-		errorMessage{Message: "File not found: " + fileNameRequested.FileName},
+		errorMessage{Message: "File not found: " + fileNameRequested},
 	  )
 	  return
 	}
   
 	aNote := models.Note {
-	  FileName: fileNameRequested.FileName,
+	  FileName: fileNameRequested,
 	  Content: string(content),
 	}
   
 	c.IndentedJSON(http.StatusOK, aNote)
+  }
+
+  func GetAllNotesForUser(c *gin.Context) {
+
+	err := os.Chdir(c.GetString("username"))
+	if err != nil {
+	  c.IndentedJSON(
+		http.StatusNotFound, 
+		errorMessage{Message: "User not found: " + c.Param("user")},
+	  )
+	  return
+	}
+
+	 // Open the current directory
+	 dir, err := os.Open(".")
+	 if err != nil {
+		c.IndentedJSON(
+			http.StatusNotFound, 
+			errorMessage{Message: "Failed to open user directory."},
+		  )
+		 return
+	 }
+	 defer dir.Close()
+ 
+	 // Read all files in the directory
+	 files, err := dir.Readdir(0)
+	 if err != nil {
+		c.IndentedJSON(
+			http.StatusNotFound, 
+			errorMessage{Message: "Failed to read files in user directoy."},
+		  )
+		 return
+	 }
+ 
+	 var fileContents []models.Note
+ 
+	 // Iterate over the files
+	 for _, fileInfo := range files {
+		 // Check if the file is not a directory
+		 if !fileInfo.IsDir() {
+	 
+			 // Read the entire content of the file
+			 content, err := os.ReadFile(fileInfo.Name())
+			 if err != nil {
+				 fmt.Println("Error reading file:", err)
+				 continue
+			 }
+ 
+			 // Create a FileContent struct and append it to the slice
+			 fileContents = append(fileContents, models.Note{
+				 FileName:  fileInfo.Name(),
+				 Content: 	string(content),
+			 })
+		 }
+	 }
+
+	 c.IndentedJSON(http.StatusOK, fileContents)
+
   }
   
   /*

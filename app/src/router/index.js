@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import NoteEditorView from '../views/NoteEditorView.vue';
 import LoginView from '../views/LoginView.vue';
+import NoteIndexView from '../views/NoteIndexView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,11 +11,11 @@ const router = createRouter({
       name: 'login',
       component: LoginView
     },
-    //{
-    //  path: '/:user',
-    //  name: 'noteIndex',
-    //  component: NoteIndexView
-    //},
+    {
+      path: '/notes',
+      name: 'noteIndex',
+      component: NoteIndexView
+    },
     {
       path: '/:user/:filename',
       name: 'editor',

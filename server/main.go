@@ -1,9 +1,10 @@
 package main
 
 import (
+  "time"
   "github.com/gin-gonic/gin"
-  "github.com/gin-contrib/static"
   _ "github.com/mattn/go-sqlite3"
+  "github.com/gin-contrib/cors"
 
   "noahhefner/notes/database"
   "noahhefner/notes/handlers"
@@ -23,17 +24,25 @@ func main() {
 
   router := gin.Default()
 
-  // Serve Vue.js frontend
-  router.Use(static.Serve("/", static.LocalFile("/usr/src/app/dist", false)))
+  config := cors.DefaultConfig()
+  config.AllowAllOrigins = true
+  config.AllowMethods = []string{"POST", "GET", "PUT", "OPTIONS"}
+  config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"}
+  config.ExposeHeaders = []string{"Content-Length"}
+  config.AllowCredentials = true
+  config.MaxAge = 12 * time.Hour
 
-  // Note routes requiring auth
+  router.Use(cors.New(config))
+
+  // Routes requiring auth
   authorized := router.Group("/")
 
   authorized.Use(middlewares.AuthMiddleware()) 
   {
     
     authorized.POST("/notes", handlers.CreateNote)
-    authorized.GET("/notes", handlers.GetNoteByFilename)
+    authorized.GET("/notes", handlers.GetAllNotesForUser)
+    authorized.GET("/notes/:filename", handlers.GetNoteByFilename)
     authorized.PATCH("/notes", handlers.UpdateNote)
     authorized.DELETE("/notes", handlers.DeleteNote)
 
@@ -41,11 +50,11 @@ func main() {
 
   }
 
-  // No auth required
+  // Routes not requiring auth
   router.POST("/login", handlers.Login)
 	router.POST("/users", handlers.AddUser)
 	
 
-  router.Run("0.0.0.0:8080")
+  router.Run("localhost:8080")
 
 }
