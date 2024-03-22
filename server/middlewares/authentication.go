@@ -22,11 +22,20 @@ type Claims struct {
 // Middleware function to handle authentication
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		tokenString := c.GetHeader("Authorization")
+		
+		/*tokenString := c.GetHeader("Authorization")
 		if tokenString == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
 			c.Abort()
 			return
+		}*/
+
+		tokenString, err := c.Cookie("jwt")
+		if err != nil {
+			// If JWT cookie is not found, return unauthorized status
+            c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+            c.Abort()
+            return
 		}
 
 		token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
@@ -72,8 +81,6 @@ func GenerateJWT(username string) (string, error) {
 		return "", err
 	}
 
-	fmt.Print(tokenString)
-
 	return tokenString, nil
 }
 
@@ -85,9 +92,6 @@ func AuthenticateUser(username string, password string) bool {
 		fmt.Print("user not found")
 		return false
 	}
-
-	fmt.Print(user.Password)
-	fmt.Print(password)
 
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {

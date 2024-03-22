@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"os"
-	"fmt"
+	//"fmt"
 	"net/http"
 	"github.com/gin-gonic/gin"
 	"noahhefner/notes/models"
@@ -14,6 +14,10 @@ type errorMessage struct {
 
 type fileName struct {
 	FileName string `json:"filename"`
+}
+
+type fileNameList struct {
+	Names []string
 }
 
 /*
@@ -87,8 +91,11 @@ func CreateNote(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, aNote)
   }
 
+  /*
+  */
   func GetAllNotesForUser(c *gin.Context) {
 
+	/*
 	err := os.Chdir(c.GetString("username"))
 	if err != nil {
 	  c.IndentedJSON(
@@ -97,9 +104,10 @@ func CreateNote(c *gin.Context) {
 	  )
 	  return
 	}
+*/
 
 	 // Open the current directory
-	 dir, err := os.Open(".")
+	 dir, err := os.Open(c.GetString("username"))
 	 if err != nil {
 		c.IndentedJSON(
 			http.StatusNotFound, 
@@ -119,29 +127,17 @@ func CreateNote(c *gin.Context) {
 		 return
 	 }
  
-	 var fileContents []models.Note
+	 var fileNames []string
  
 	 // Iterate over the files
 	 for _, fileInfo := range files {
 		 // Check if the file is not a directory
 		 if !fileInfo.IsDir() {
-	 
-			 // Read the entire content of the file
-			 content, err := os.ReadFile(fileInfo.Name())
-			 if err != nil {
-				 fmt.Println("Error reading file:", err)
-				 continue
-			 }
- 
-			 // Create a FileContent struct and append it to the slice
-			 fileContents = append(fileContents, models.Note{
-				 FileName:  fileInfo.Name(),
-				 Content: 	string(content),
-			 })
+			 fileNames = append(fileNames, fileInfo.Name())
 		 }
 	 }
 
-	 c.IndentedJSON(http.StatusOK, fileContents)
+	 c.HTML(http.StatusOK, "notes.html", fileNameList{Names: fileNames})
 
   }
   

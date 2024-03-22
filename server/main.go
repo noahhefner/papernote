@@ -1,11 +1,11 @@
 package main
 
 import (
-  "time"
+  //"time"
   "github.com/gin-gonic/gin"
   _ "github.com/mattn/go-sqlite3"
-  "github.com/gin-contrib/cors"
-
+  //"github.com/gin-contrib/cors"
+  "net/http"
   "noahhefner/notes/database"
   "noahhefner/notes/handlers"
   "noahhefner/notes/middlewares"
@@ -24,6 +24,9 @@ func main() {
 
   router := gin.Default()
 
+  // Load HTML templates
+  router.LoadHTMLGlob("templates/*")
+  /*
   config := cors.DefaultConfig()
   config.AllowAllOrigins = true
   config.AllowMethods = []string{"POST", "GET", "PUT", "OPTIONS"}
@@ -33,7 +36,7 @@ func main() {
   config.MaxAge = 12 * time.Hour
 
   router.Use(cors.New(config))
-
+*/
   // Routes requiring auth
   authorized := router.Group("/")
 
@@ -53,7 +56,12 @@ func main() {
   // Routes not requiring auth
   router.POST("/login", handlers.Login)
 	router.POST("/users", handlers.AddUser)
-	
+
+  router.GET("/login", func(c *gin.Context) {
+    c.HTML(http.StatusOK, "login.html", gin.H{
+      "title": "login",
+    })
+  })
 
   router.Run("localhost:8080")
 
