@@ -5,16 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="/static/css/pico.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css">
 </head>
 <body>
     <header></header>
     <main class="container">
         <form action="/login" method="POST">
-            <label for="username">Username</label>
-            <input id="username" name="username" type="text">
-            <label for="password" type="text">Password</label>
-            <input id="password" name="password" type="password">
-            <input type="submit" value="Login">
+            <div class="grid">
+                <div>
+                </div>
+                <div class="img-container">
+                    <img src="/static/images/logo.jpg" alt="logo">
+                </div>
+                <div>
+                </div>
+            </div>
+            <br/>
+            <div class="grid">
+                <div>
+                </div>
+                <div>
+                    <label for="username">Username</label>
+                    <input id="username" name="username" type="text">
+                    <label for="password" type="text">Password</label>
+                    <input id="password" name="password" type="password">
+                    <input type="submit" value="Login">
+                </div>
+                <div>
+                </div>
+            </div>
         </form>
     </main>
     <footer></footer>
