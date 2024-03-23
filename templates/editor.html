@@ -5,15 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .FileName }}</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/pico.min.css">
 </head>
 <body>
-    <h1>{{ .FileName }}</h1>
-    <div id="content"></div>
-    
+    <main class="container-fluid">
+        <h1>{{ .FileName }}</h1>
+        <form action="/notes/{{ .FileName }}" method="POST">
+            <div class="grid">
+                <div>
+                    <textarea id="editor" name="editor">{{ .Content }}</textarea>
+                </div>
+                <div id="rendered">
+                </div>
+            </div>
+            <input type="submit" value="Save">
+        </form>
+    </main>
     <script>
-        console.log(content)
-        document.getElementById('content').innerHTML =
-          marked.parse('{{ .Content }}');
-      </script>
+
+        var textarea = document.getElementById('editor');
+
+        function renderMarkdown () {
+            var markdown = textarea.value;
+            document.getElementById('rendered').innerHTML =
+                marked.parse(markdown);
+        }
+
+        // Render on page load
+        renderMarkdown()
+        // Rerender on update
+        textarea.addEventListener('input', renderMarkdown);
+
+    </script>
 </body>
 </html>

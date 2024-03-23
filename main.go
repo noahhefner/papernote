@@ -1,18 +1,17 @@
 package main
 
 import (
-  "github.com/gin-gonic/gin"
-  _ "github.com/mattn/go-sqlite3"
-  "net/http" 
-  "noahhefner/notes/database"
-  "noahhefner/notes/handlers"
-  "noahhefner/notes/middlewares"
-
+	"github.com/gin-gonic/gin"
+	_ "github.com/mattn/go-sqlite3"
+	"net/http"
+	"noahhefner/notes/database"
+	"noahhefner/notes/handlers"
+	"noahhefner/notes/middlewares"
 )
 
 func main() {
 
-  // Connect to SQLite database
+	// Connect to SQLite database
 	var err error
 	err = database.Init("./users.db")
 	if err != nil {
@@ -20,37 +19,45 @@ func main() {
 	}
 	defer database.Close()
 
-  router := gin.Default()
+	// Initialize JWT secret from environment variable
+	middlewares.InitJWTSecret()
 
-  // Load HTML templates
-  router.LoadHTMLGlob("templates/*")
+	router := gin.Default()
 
-  // Routes requiring auth
-  authorized := router.Group("/")
+	router.Static("/static", "./public")
 
-  authorized.Use(middlewares.AuthMiddleware()) 
-  {
-    
-    authorized.POST("/notes", handlers.CreateNote)
-    authorized.GET("/notes", handlers.GetAllNotesForUser)
-    authorized.GET("/notes/:filename", handlers.GetNoteByFilename)
-    authorized.PATCH("/notes", handlers.UpdateNote)
-    authorized.DELETE("/notes", handlers.DeleteNote)
+	router.LoadHTMLGlob("templates/*")
 
-    authorized.GET("/users/:username", handlers.GetUser)
+	authorized := router.Group("/")
 
-  }
+	authorized.Use(middlewares.AuthMiddleware())
+	{
 
-  // Routes not requiring auth
-  router.POST("/login", handlers.Login)
+		authorized.POST("/notes", handlers.CreateNote)
+		authorized.GET("/notes", handlers.GetAllNotesForUser)
+		authorized.GET("/notes/:filename", handlers.GetNoteByFilename)
+		authorized.POST("/notes/:filename", handlers.UpdateNote)
+		authorized.DELETE("/notes", handlers.DeleteNote)
+
+		authorized.GET("/users/:username", handlers.GetUser)
+
+	}
+
+	router.POST("/login", handlers.Login)
 	router.POST("/users", handlers.AddUser)
 
-  router.GET("/login", func(c *gin.Context) {
-    c.HTML(http.StatusOK, "login.html", gin.H{
-      "name": "login",
-    })
-  })
+	router.GET("/", func(c *gin.Context) {
+		// If the user is authenticated, they will be redirected to /notes
+		// Otherwise, the auth middleware will redirect to /login
+		c.Redirect(http.StatusTemporaryRedirect, "/notes")
+	})
 
-  router.Run("localhost:8080")
+	router.GET("/login", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "login.html", gin.H{
+			"name": "login",
+		})
+	})
+
+	router.Run("localhost:8080")
 
 }

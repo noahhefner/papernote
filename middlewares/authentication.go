@@ -4,37 +4,42 @@ import (
 	"net/http"
 	"time"
 	"fmt"
+	"os"
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"gopkg.in/dgrijalva/jwt-go.v3"
 	"noahhefner/notes/database"
 )
 
-// JWTSecret is the secret key used to sign JWT tokens
-var JWTSecret = []byte("secret_key") // Change this to a secure value
+var JWTSecret []byte
 
-// Claims represents the JWT claims
 type Claims struct {
 	Username string `json:"username"`
 	jwt.StandardClaims
 }
 
-// Middleware function to handle authentication
+/*
+Attempt to reach JWT secret from environment variable. Use default JWT secret
+if environment variable is not set.
+*/
+func InitJWTSecret() {
+
+	JWTSecret = []byte(os.Getenv("JWT_SECRET"))
+
+	if len(JWTSecret) == 0 {
+		fmt.Println("JWT secret environment variable not set! Using default jwt secret.")
+		JWTSecret = []byte("default_jwt_key")
+	}
+
+}
+
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		
-		/*tokenString := c.GetHeader("Authorization")
-		if tokenString == "" {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header is missing"})
-			c.Abort()
-			return
-		}*/
 
 		tokenString, err := c.Cookie("jwt")
 		if err != nil {
-			// If JWT cookie is not found, return unauthorized status
-            c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
-            c.Abort()
+            c.Redirect(http.StatusTemporaryRedirect, "/login")
+			c.Abort()
             return
 		}
 
@@ -43,20 +48,20 @@ func AuthMiddleware() gin.HandlerFunc {
 		})
 
 		if err != nil {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
+			c.Redirect(http.StatusTemporaryRedirect, "/login")
 			c.Abort()
 			return
 		}
 
 		if !token.Valid {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Token is invalid"})
+			c.Redirect(http.StatusTemporaryRedirect, "/login")
 			c.Abort()
 			return
 		}
 
 		claims, ok := token.Claims.(*Claims)
 		if !ok {
-			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token claims"})
+			c.Redirect(http.StatusTemporaryRedirect, "/login")
 			c.Abort()
 			return
 		}
@@ -66,12 +71,11 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-// GenerateJWT generates a JWT token for the given username
 func GenerateJWT(username string) (string, error) {
 	claims := &Claims{
 		Username: username,
 		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), // Token expires in 24 hours
+			ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 		},
 	}
 
@@ -84,7 +88,6 @@ func GenerateJWT(username string) (string, error) {
 	return tokenString, nil
 }
 
-// Check if username/password is valid
 func AuthenticateUser(username string, password string) bool {
 
 	user, err := database.GetUserByUsername(username)

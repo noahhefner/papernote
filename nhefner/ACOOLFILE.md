@@ -1,3 +1,3 @@
 # A Cool File
-
-This is a *really* cool file.
+   
+This is a *really* cool file
