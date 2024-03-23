@@ -2,7 +2,7 @@
 
 Work in progress
 
-Self-hostable web app for notes. Backend in Go, frontend in Vue.js, stores markdown notes as plain markdown files.
+Self-hostable web app for notes, written in Golang.
 
 ## Development
 

@@ -63,32 +63,23 @@ func CreateNote(c *gin.Context) {
   */
   func GetNoteByFilename(c *gin.Context){
 
-	err := os.Chdir(c.GetString("username"))
-	if err != nil {
-	  c.IndentedJSON(
-		http.StatusNotFound, 
-		errorMessage{Message: "User not found"},
-	  )
-	  return
-	}
-  
-	var fileNameRequested = c.Param("filename")
+	var path = c.GetString("username") + "/" + c.Param("filename")
 
-	content, err := os.ReadFile(fileNameRequested)
+	content, err := os.ReadFile(path)
 	if err != nil {
 	  c.IndentedJSON(
 		http.StatusNotFound, 
-		errorMessage{Message: "File not found: " + fileNameRequested},
+		errorMessage{Message: "File not found."},
 	  )
 	  return
 	}
   
-	aNote := models.Note {
-	  FileName: fileNameRequested,
+	var singleNote = models.Note {
+	  FileName: c.Param("filename"),
 	  Content: string(content),
 	}
   
-	c.IndentedJSON(http.StatusOK, aNote)
+	c.HTML(http.StatusOK, "editor.html", singleNote)
   }
 
   /*
