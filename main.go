@@ -26,7 +26,7 @@ func main() {
 
 	router.Static("/static", "./public")
 
-	router.LoadHTMLGlob("templates/*")
+	router.LoadHTMLGlob("templates/**/*")
 
 	authorized := router.Group("/")
 
