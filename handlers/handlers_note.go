@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"noahhefner/notes/models"
 	"os"
+	"encoding/json"
+    "io/ioutil"
+    "path/filepath"
 )
 
 type errorMessage struct {
@@ -17,6 +20,12 @@ type fileName struct {
 
 type fileNameList struct {
 	Names []string
+}
+
+type FileNode struct {
+    Name     string      `json:"name"`
+    IsDir    bool        `json:"isDir"`
+    Children []*FileNode `json:"children,omitempty"`
 }
 
 /*
@@ -86,35 +95,45 @@ func GetNoteByFilename(c *gin.Context) {
 */
 func GetAllNotesForUser(c *gin.Context) {
 
-	dir, err := os.Open(c.GetString("username"))
-	if err != nil {
-		c.IndentedJSON(
-			http.StatusNotFound,
-			errorMessage{Message: "Failed to open user directory."},
-		)
-		return
-	}
-	defer dir.Close()
+	// TODO: Validate user dir before proceeding
+	rootNode := traverseDirectory("./" + c.GetString("username"))
 
-	files, err := dir.Readdir(0)
-	if err != nil {
-		c.IndentedJSON(
-			http.StatusNotFound,
-			errorMessage{Message: "Failed to read files in user directoy."},
-		)
-		return
-	}
+    jsonData, err := json.MarshalIndent(rootNode, "", "  ")
+    if err != nil {
+        panic(err)
+    }
+    // Output the JSON representation of the directory structure
+    os.Stdout.Write(jsonData)
 
-	var fileNames []string
+	c.HTML(http.StatusOK, "notes.html", rootNode)
 
-	for _, fileInfo := range files {
-		if !fileInfo.IsDir() {
-			fileNames = append(fileNames, fileInfo.Name())
-		}
-	}
+}
 
-	c.HTML(http.StatusOK, "notes.html", fileNameList{Names: fileNames})
+func traverseDirectory(dirPath string) *FileNode {
+    files, err := ioutil.ReadDir(dirPath)
+    if err != nil {
+        panic(err)
+    }
 
+    node := &FileNode{
+        Name:  filepath.Base(dirPath),
+        IsDir: true,
+    }
+
+    for _, file := range files {
+        childPath := filepath.Join(dirPath, file.Name())
+
+        if file.IsDir() {
+            node.Children = append(node.Children, traverseDirectory(childPath))
+        } else {
+            node.Children = append(node.Children, &FileNode{
+                Name:  file.Name(),
+                IsDir: false,
+            })
+        }
+    }
+
+    return node
 }
 
 /*

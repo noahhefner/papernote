@@ -5,14 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
     <link rel="stylesheet" type="text/css" href="/static/css/notes.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/sideNav.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 </head>
-<body>
-    {{ template "header.html" . }}
+<body></body>
+    {{ template "sideNav.html" . }}
     <main class="container">
-        <h1>Your Notes</h1>
+        {{ template "header.html" . }}
         <ul>
             {{ range .Names }}
                 <li><a href="/notes/{{ . }}">{{ . }}</li>
@@ -21,5 +23,8 @@
     </main>
     <footer>
     </footer>
+    <script>
+        feather.replace({'width': 36, 'height': 36});
+    </script>
 </body>
 </html>
