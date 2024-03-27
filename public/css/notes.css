@@ -11,3 +11,13 @@ header h2 {
 body {
     padding: 1rem;
 }
+
+.note-link {
+    cursor: pointer;
+}
+
+.note-link-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+}

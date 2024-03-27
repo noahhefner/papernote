@@ -85,7 +85,8 @@ func GetNoteByFilename(c *gin.Context) {
 		Content:  string(content),
 	}
 
-	c.HTML(http.StatusOK, "editor.html", singleNote)
+	c.HTML(http.StatusOK, "notePreview.html", singleNote)
+	//c.HTML(http.StatusOK, "editor.html", singleNote)
 }
 
 /*

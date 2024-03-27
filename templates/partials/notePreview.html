@@ -1,0 +1,7 @@
+<h1>{{ .FileName }}</h1>
+<div id="rendered" class="column">
+</div>
+<script>
+    var markdown = "{{ .Content }}";
+    document.getElementById('rendered').innerHTML = marked.parse(markdown);
+</script>

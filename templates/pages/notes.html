@@ -4,27 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/notes.css">
     <link rel="stylesheet" type="text/css" href="/static/css/sideNav.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/grid.css">
 </head>
 <body>
     {{ template "sideNav.html" . }}
     <main class="container">
         {{ template "header.html" . }}
-        <ul>
-            {{ range .Names }}
-                <li><a href="/notes/{{ . }}">{{ . }}</li>
-            {{ end }}
-        </ul>
+        <div class="row">
+            <div class="column column-25">
+                {{ range .Names }}
+                <div class="note-link-wrapper">
+                    <a hx-get="/notes/{{ . }}" 
+                       hx-target="#preview" 
+                       hx-swap="innerHTML"
+                       class="note-link"
+                    >
+                        {{ . }}
+                    </a>
+                </div>
+                {{ end }}
+            </div>
+            <div class="column column-75">
+                <div id="preview">
+                </div>
+            </div>
+        </div>
     </main>
     <footer>
     </footer>
-    <script>
-        feather.replace({'width': 36, 'height': 36});
-    </script>
 </body>
 </html>
