@@ -5,9 +5,7 @@ import (
 	"net/http"
 	"noahhefner/notes/models"
 	"os"
-	"encoding/json"
     "io/ioutil"
-    "path/filepath"
 )
 
 type errorMessage struct {
@@ -96,44 +94,20 @@ func GetNoteByFilename(c *gin.Context) {
 func GetAllNotesForUser(c *gin.Context) {
 
 	// TODO: Validate user dir before proceeding
-	rootNode := traverseDirectory("./" + c.GetString("username"))
-
-    jsonData, err := json.MarshalIndent(rootNode, "", "  ")
-    if err != nil {
-        panic(err)
-    }
-    // Output the JSON representation of the directory structure
-    os.Stdout.Write(jsonData)
-
-	c.HTML(http.StatusOK, "notes.html", rootNode)
-
-}
-
-func traverseDirectory(dirPath string) *FileNode {
-    files, err := ioutil.ReadDir(dirPath)
+	files, err := ioutil.ReadDir("./" + c.GetString("username"))
     if err != nil {
         panic(err)
     }
 
-    node := &FileNode{
-        Name:  filepath.Base(dirPath),
-        IsDir: true,
-    }
+	var filenames []string
 
     for _, file := range files {
-        childPath := filepath.Join(dirPath, file.Name())
-
-        if file.IsDir() {
-            node.Children = append(node.Children, traverseDirectory(childPath))
-        } else {
-            node.Children = append(node.Children, &FileNode{
-                Name:  file.Name(),
-                IsDir: false,
-            })
-        }
+		// TODO: Validate file type is .md
+		filenames = append(filenames, file.Name())
     }
 
-    return node
+	c.HTML(http.StatusOK, "notes.html", fileNameList{Names:filenames})
+
 }
 
 /*

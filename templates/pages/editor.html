@@ -5,18 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ .FileName }}</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/pico.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
     <link rel="stylesheet" type="text/css" href="/static/css/editor.css">
 </head>
 <body>
-    <main class="container-fluid">
+    <main class="container">
         <h1>{{ .FileName }}</h1>
         <form action="/notes/{{ .FileName }}" method="POST">
-            <div class="grid">
-                <div>
+            <div class="row">
+                <div class="column">
                     <textarea id="editor" name="editor" rows="24">{{ .Content }}</textarea>
                 </div>
-                <div id="rendered">
+                <div id="rendered" class="column">
                 </div>
             </div>
             <input type="submit" value="Save">
