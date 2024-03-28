@@ -21,6 +21,7 @@
                     <a hx-get="/notes/{{ . }}" 
                        hx-target="#preview" 
                        hx-swap="innerHTML"
+                       hx-trigger="mouseenter"
                        class="note-link"
                     >
                         {{ . }}
