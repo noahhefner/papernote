@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"noahhefner/notes/models"
 	"os"
+	"time"
     "io/ioutil"
 )
 
@@ -85,8 +86,33 @@ func GetNoteByFilename(c *gin.Context) {
 		Content:  string(content),
 	}
 
+	c.Header("Cache-Control", "max-age=3600")  // Cache response for 1 hour
+    expires := time.Now().Add(time.Hour)
+    c.Header("Expires", expires.Format(time.RFC1123))  // Example expiration date
+
 	c.HTML(http.StatusOK, "notePreview.html", singleNote)
 	//c.HTML(http.StatusOK, "editor.html", singleNote)
+}
+
+func GetEditor(c *gin.Context) {
+
+	var path = c.GetString("username") + "/" + c.Param("filename")
+
+	content, err := os.ReadFile(path)
+	if err != nil {
+		c.IndentedJSON(
+			http.StatusNotFound,
+			errorMessage{Message: "File not found."},
+		)
+		return
+	}
+
+	var singleNote = models.Note{
+		FileName: c.Param("filename"),
+		Content:  string(content),
+	}
+
+	c.HTML(http.StatusOK, "editor.html", singleNote)
 }
 
 /*

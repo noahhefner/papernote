@@ -12,21 +12,23 @@
 </head>
 <body>
     {{ template "sideNav.html" . }}
-    <main class="container">
+    <main class="container" hx-boost="true">
         {{ template "header.html" . }}
         <div class="row">
             <div class="column column-25">
                 {{ range .Names }}
-                <div class="note-link-wrapper">
-                    <a hx-get="/notes/{{ . }}" 
-                       hx-target="#preview" 
-                       hx-swap="innerHTML"
-                       hx-trigger="mouseenter"
-                       class="note-link"
-                    >
+                <div hx-get="/notes/{{ . }}" 
+                     hx-target="#preview" 
+                     hx-swap="innerHTML"
+                     hx-trigger="mouseenter"
+                     hx-cache="true"class="note-link-wrapper">
+                    <p class="note-link">
                         {{ . }}
-                    </a>
+                    </p>
                 </div>
+                <a href="/notes/{{ . }}/edit">
+                    <img src="/static/img/edit.svg" alt="edit note" class="edit-button">
+                </a>
                 {{ end }}
             </div>
             <div class="column column-75">

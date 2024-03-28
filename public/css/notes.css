@@ -12,12 +12,39 @@ body {
     padding: 1rem;
 }
 
-.note-link {
-    cursor: pointer;
-}
-
 .note-link-wrapper {
     display: flex;
     align-items: center;
     padding: 1rem;
+    position: relative;
+}
+
+.edit-button {
+    align-items: center;
+    padding: 1rem;
+    position: absolute;
+    left: -30px;
+    transition: opacity 0.3s ease, left 0.3s ease;
+}
+
+.note-link-wrapper:hover ~ .edit-button {
+    left: 0;
+    opacity: 1;
+}
+
+.note-link-wrapper:not(:hover) ~ .edit-button {
+    left: -30px;
+    opacity: 0;
+}
+
+.note-link-wrapper .note-link {
+    transition: padding-left 0.3s ease;
+}
+
+.note-link-wrapper:hover .note-link {
+    padding-left: 30px;
+}
+
+.note-link-wrapper:not(:hover) .note-link {
+    padding-left: 0px;
 }
