@@ -6,16 +6,17 @@
     <title>{{ .FileName }}</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/editor.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/grid.css">
 </head>
 <body>
     <main class="container">
         <h1>{{ .FileName }}</h1>
         <form action="/notes/{{ .FileName }}" method="POST">
             <div class="row">
-                <div class="column">
+                <div class="column column-50">
                     <textarea id="editor" name="editor" rows="24">{{ .Content }}</textarea>
                 </div>
-                <div id="rendered" class="column">
+                <div id="rendered" class="column column-50">
                 </div>
             </div>
             <input type="submit" value="Save">
