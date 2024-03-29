@@ -12,7 +12,14 @@ body {
     padding: 1rem;
 }
 
-.note-link-wrapper {
+.note-title-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    position: relative;
+}
+
+.note-entry-wrapper {
     display: flex;
     align-items: center;
     padding: 1rem;
@@ -23,28 +30,29 @@ body {
     align-items: center;
     padding: 1rem;
     position: absolute;
-    left: -30px;
-    transition: opacity 0.3s ease, left 0.3s ease;
-}
-
-.note-link-wrapper:hover ~ .edit-button {
-    left: 0;
-    opacity: 1;
-}
-
-.note-link-wrapper:not(:hover) ~ .edit-button {
-    left: -30px;
     opacity: 0;
 }
 
-.note-link-wrapper .note-link {
+/* show/hide edit button on hover */
+
+.note-entry-wrapper:hover .edit-button {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.note-entry-wrapper:not(:hover) ~ .edit-button {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* shift note title left/right on hover */
+
+.note-entry-wrapper:hover .note-title {
+    padding-left: 30px;
     transition: padding-left 0.3s ease;
 }
 
-.note-link-wrapper:hover .note-link {
-    padding-left: 30px;
-}
-
-.note-link-wrapper:not(:hover) .note-link {
+.note-entry-wrapper:not(:hover) .note-title {
     padding-left: 0px;
+    transition: padding-left 0.3s ease;
 }

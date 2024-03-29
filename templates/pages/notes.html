@@ -17,18 +17,19 @@
         <div class="row">
             <div class="column column-25">
                 {{ range .Names }}
-                <div hx-get="/notes/{{ . }}" 
-                     hx-target="#preview" 
-                     hx-swap="innerHTML"
-                     hx-trigger="mouseenter"
-                     hx-cache="true"class="note-link-wrapper">
-                    <p class="note-link">
-                        {{ . }}
-                    </p>
-                </div>
                 <a href="/notes/{{ . }}/edit">
                     <img src="/static/img/edit.svg" alt="edit note" class="edit-button">
                 </a>
+                <div hx-get="/notes/{{ . }}" 
+                    hx-target="#preview" 
+                    hx-swap="innerHTML"
+                    hx-trigger="mouseenter"
+                    hx-cache="true"
+                    class="note-title-wrapper">
+                    <p class="note-title">
+                        {{ . }}
+                    </p>
+                </div>
                 {{ end }}
             </div>
             <div class="column column-75">
