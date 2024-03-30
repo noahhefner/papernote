@@ -9,21 +9,16 @@
     <link rel="stylesheet" type="text/css" href="/static/css/common.css">
 </head>
 <body>
-    <div class="container">
-        <form action="/login" method="POST">
-            <div class="row">
-                <div class="column column-33 column-offset-33">
-                    <div class="img-container">
-                        <img src="/static/img/logo.jpg" alt="logo">
-                    </div>
-                    <label for="username">Username</label>
-                    <input id="username" name="username" type="text">
-                    <label for="password" type="text">Password</label>
-                    <input id="password" name="password" type="password">
-                    <input type="submit" value="Login">
-                </div>
-            </div>
-        </form>
-    </div>
+  <main>
+    <form action="/login" method="POST">
+      <div class="img-container">
+        <img src="/static/img/logo.png" alt="logo">
+      </div>
+      <input id="username" name="username" type="text" placeholder="Username">
+      <input id="password" name="password" type="password" placeholder="Password">
+      <input type="submit" value="Login">
+    </form>
+    <a href="/">Create an account</a>
+  </main>
 </body>
 </html>

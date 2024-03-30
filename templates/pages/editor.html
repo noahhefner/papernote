@@ -13,7 +13,7 @@
     <main class="app-container">
         <h1>{{ .FileName }}</h1>
         <form action="/notes/{{ .FileName }}" method="POST">
-            <div class="grid-container">
+            <div class="grid-container two-columns">
                 <div class="grid-markdown">
                     <textarea id="editor" name="editor" rows="24">{{ .Content }}</textarea>
                 </div>
@@ -27,7 +27,7 @@
         var textarea = document.getElementById('editor');
         function renderMarkdown () {
             var markdown = textarea.value;
-            document.getElementById('grid-rendered').innerHTML =
+            document.getElementById('rendered').innerHTML =
                 marked.parse(markdown);
         }
         // Render on page load

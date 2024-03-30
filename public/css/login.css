@@ -1,10 +1,58 @@
-.img-container {
+body {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+main {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.img-container {
+  margin-bottom: 20px;
 }
 
 .img-container img {
-  width: 200px;
-  height: 200px;
+  width: 128px;
+  height: 128px;
+}
+
+input[type="text"],
+input[type="password"] {
+  border-radius: 0.4rem;
+  border: 1px solid #ccc;
+  appearance: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+  padding: 0.5rem;
+  margin-bottom: 20px;
+}
+
+input[type="submit"] {
+  border-radius: 0.4rem;
+  border: none;
+  appearance: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  box-shadow: none;
+  padding: 0.5rem;
+}
+
+a {
+  text-decoration: none;
 }

@@ -17,7 +17,8 @@ type fileName struct {
 	FileName string `json:"filename"`
 }
 
-type fileNameList struct {
+type notesPageContext struct {
+	Username string
 	Names []string
 }
 
@@ -133,7 +134,12 @@ func GetAllNotesForUser(c *gin.Context) {
 		filenames = append(filenames, file.Name())
     }
 
-	c.HTML(http.StatusOK, "notes.html", fileNameList{Names:filenames})
+	context := notesPageContext {
+		Username: c.GetString("username"),
+		Names: filenames,
+	}
+
+	c.HTML(http.StatusOK, "notes.html", context)
 
 }
 
