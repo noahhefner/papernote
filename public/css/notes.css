@@ -1,11 +1,10 @@
 main {
     border-radius: 1rem;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    height: 100%;
+    height: 90%;
 }
 
 body {
-    padding-top: 1rem;
     padding-bottom: 1rem;
     padding-left: 0;
     padding-right: 0;
@@ -30,6 +29,10 @@ body {
 
 .preview {
     padding: 1rem;
+}
+
+.rendered {
+    border-top: 1px solid #ccc;
 }
 
 /* edit link icon */
@@ -74,11 +77,11 @@ body {
 }
 
 .note-list {
-    flex-grow: 1;
-    flex-shrink: 1;
+    flex: 25%;
 }
 
 .note-preview {
-    flex-grow: 3;
-    flex-shrink: 1;
+    flex: 75%;
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
