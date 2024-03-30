@@ -7,15 +7,14 @@
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/notes.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/sideNav.css">
     <link rel="stylesheet" type="text/css" href="/static/css/grid.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
 </head>
 <body>
-    {{ template "sideNav.html" . }}
-    <main class="container">
+    <main class="app-container">
         {{ template "header.html" . }}
-        <div class="row">
-            <div class="column column-25">
+        <div class="grid-container">
+            <div class="grid-list">
                 {{ range .Names }}
                 <div class="note-entry-wrapper"
                     hx-get="/notes/{{ . }}" 
@@ -30,7 +29,7 @@
                 </div>
                 {{ end }}
             </div>
-            <div class="column column-75">
+            <div class="grid-preview">
                 <div id="preview">
                 </div>
             </div>

@@ -7,31 +7,29 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/editor.css">
     <link rel="stylesheet" type="text/css" href="/static/css/grid.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css">
 </head>
 <body>
-    <main class="container">
+    <main class="app-container">
         <h1>{{ .FileName }}</h1>
         <form action="/notes/{{ .FileName }}" method="POST">
-            <div class="row">
-                <div class="column column-50">
+            <div class="grid-container">
+                <div class="grid-markdown">
                     <textarea id="editor" name="editor" rows="24">{{ .Content }}</textarea>
                 </div>
-                <div id="rendered" class="column column-50">
+                <div id="rendered" class="grid-rendered">
                 </div>
             </div>
             <input type="submit" value="Save">
         </form>
     </main>
     <script>
-
         var textarea = document.getElementById('editor');
-
         function renderMarkdown () {
             var markdown = textarea.value;
-            document.getElementById('rendered').innerHTML =
+            document.getElementById('grid-rendered').innerHTML =
                 marked.parse(markdown);
         }
-
         // Render on page load
         renderMarkdown()
         // Rerender on update
