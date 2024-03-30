@@ -7,14 +7,12 @@
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/notes.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/grid.css">
     <link rel="stylesheet" type="text/css" href="/static/css/common.css">
 </head>
 <body>
     <main class="app-container">
-        {{ template "header.html" . }}
-        <div class="grid-container four-columns">
-            <div class="grid-list">
+        <div class="note-container">
+            <div class="note-list">
                 {{ range .Names }}
                 <div class="note-entry-wrapper"
                     hx-get="/notes/{{ . }}" 
@@ -29,9 +27,7 @@
                 </div>
                 {{ end }}
             </div>
-            <div class="grid-preview">
-                <div id="preview">
-                </div>
+            <div id="preview" class="note-preview">
             </div>
         </div>
     </main>
