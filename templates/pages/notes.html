@@ -8,31 +8,35 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" type="text/css" href="/static/css/notes.css">
     <link rel="stylesheet" type="text/css" href="/static/css/common.css">
+    <link rel="stylesheet" type="text/css" href="/static/css/header.css">
 </head>
 <body>
     {{ template "header.html" . }}
     <main class="app-container">
         <div class="note-container">
-            <div class="note-list">
-                {{ range .Names }}
-                <div class="note-entry-wrapper"
-                    hx-get="/notes/{{ . }}" 
-                    hx-target="#preview" 
-                    hx-swap="innerHTML"
-                    hx-trigger="mouseenter"
-                    hx-cache="true">
-                    <a href="/notes/{{ . }}/edit" class="edit-link"></a>
-                    <p class="note-title">
-                        {{ . }}
-                    </p>
+            <div class="left-pane">
+                <div class="new-note-wrapper">
+                    <button class="new-note">New Note</button>
                 </div>
-                {{ end }}
+                <div class="note-list">
+                    {{ range .Names }}
+                    <div class="note-entry-wrapper"
+                        hx-get="/notes/{{ . }}" 
+                        hx-target="#preview" 
+                        hx-swap="innerHTML"
+                        hx-trigger="mouseenter"
+                        hx-cache="true">
+                        <a href="/notes/{{ . }}/edit" class="edit-link"></a>
+                        <p class="note-title">
+                            {{ . }}
+                        </p>
+                    </div>
+                    {{ end }}
+                </div>
             </div>
-            <div id="preview" class="note-preview">
+            <div id="preview" class="right-pane">
             </div>
         </div>
     </main>
-    <footer>
-    </footer>
 </body>
 </html>

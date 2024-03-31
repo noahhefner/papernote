@@ -9,6 +9,39 @@ body {
     padding-left: 0;
     padding-right: 0;
     height: 100vh;
+    line-height: normal;
+}
+
+.new-note-wrapper {
+    height: 64px;
+    width: 100%;
+    border-bottom: 1px solid #ccc;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.note-preview-title {
+    height: 64px;
+    box-sizing: border-box;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+
+.new-note {
+    text-align: center;
+    margin: 1rem;
+    width: calc(100% - 2rem);
+}
+
+.note-list {
+    width: 100%;
+    overflow: scroll;
 }
 
 .note-entry-wrapper {
@@ -21,18 +54,20 @@ body {
     box-sizing: border-box;
 }
 
+.note-entry-wrapper p {
+    cursor: default;
+}
+
 .note-title {
     padding: 1rem 0;
     margin: 0;
     transition: padding-left 0.3s ease;
 }
 
+
+
 .preview {
     padding: 1rem;
-}
-
-.rendered {
-    border-top: 1px solid #ccc;
 }
 
 /* edit link icon */
@@ -71,17 +106,31 @@ body {
     padding-left: 0px;
 }
 
+/* Layout */
+
+/* Flexbox container */
 .note-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    width: 100%;
+    height: 100%;
 }
 
-.note-list {
-    flex: 25%;
+.left-pane {
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
 }
 
-.note-preview {
-    flex: 75%;
+.right-pane {
+    height: 100%;
+    width: calc(75% - 2rem);
+    border-left: 1px solid #ccc;
     padding-left: 1rem;
     padding-right: 1rem;
+    display: flex;
+    flex-direction: column;
 }
