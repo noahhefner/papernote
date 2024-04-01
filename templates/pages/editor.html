@@ -12,16 +12,17 @@
 <body>
     <main class="app-container">
         <h1>{{ .FileName }}</h1>
-        <form action="/notes/{{ .FileName }}" method="POST">
-            <div class="grid-container two-columns">
-                <div class="grid-markdown">
-                    <textarea id="editor" name="editor" rows="24">{{ .Content }}</textarea>
-                </div>
-                <div id="rendered" class="grid-rendered">
-                </div>
+        <div class="action-bar">
+            <button>Save</button>
+            <button>Add Image</button>
+        </div>
+        <div class="grid-container two-columns">
+            <div class="grid-markdown">
+                <textarea id="editor" name="editor" rows="24">{{ .Content }}</textarea>
             </div>
-            <input type="submit" value="Save">
-        </form>
+            <div id="rendered" class="grid-rendered">
+            </div>
+        </div>
     </main>
     <script>
         var textarea = document.getElementById('editor');
