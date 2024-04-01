@@ -27,10 +27,13 @@ body {
     height: 64px;
     box-sizing: border-box;
     width: 100%;
-    justify-content: center;
     align-items: center;
     display: flex;
     border-bottom: 1px solid #ccc;
+}
+
+.rendered {
+    overflow: scroll;
 }
 
 .new-note {
@@ -63,8 +66,6 @@ body {
     margin: 0;
     transition: padding-left 0.3s ease;
 }
-
-
 
 .preview {
     padding: 1rem;

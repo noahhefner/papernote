@@ -5,9 +5,14 @@ header {
     max-width: 1400px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 header h1 {
     padding: 0;
+    margin: 1rem;
+}
+
+header button {
     margin: 1rem;
 }
