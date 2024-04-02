@@ -10,17 +10,27 @@
     <link rel="stylesheet" type="text/css" href="/static/css/common.css">
 </head>
 <body>
-    <main class="app-container">
+    <div class="note-filename-container">
         <h1>{{ .FileName }}</h1>
+    </div>
+    <main class="app-container">
         <div class="action-bar">
-            <button>Save</button>
-            <button>Add Image</button>
+            <button>
+                <img src="/static/img/save.svg" alt="save_icon">
+                Save
+            </button>
+            <button>
+                <img src="/static/img/image.svg" alt="img_icon">
+                Add Image
+            </button>
         </div>
-        <div class="grid-container two-columns">
-            <div class="grid-markdown">
-                <textarea id="editor" name="editor" rows="24">{{ .Content }}</textarea>
-            </div>
-            <div id="rendered" class="grid-rendered">
+        <div class="writing-wrapper">
+            <div class="grid-container two-columns">
+                <div class="grid-markdown markdown-column">
+                    <textarea id="editor" name="editor" rows="24">{{ .Content }}</textarea>
+                </div>
+                <div id="rendered" class="grid-rendered rendered-column">
+                </div>
             </div>
         </div>
     </main>

@@ -2,6 +2,11 @@ body {
     box-sizing: border-box;
     margin: 0;
     font-family: "Courier New", Courier, monospace;
+    padding-bottom: 1rem;
+    padding-left: 0;
+    padding-right: 0;
+    height: 100vh;
+    line-height: normal;
 }
 
 button {
@@ -9,11 +14,8 @@ button {
     border: 1px solid #ccc;
     appearance: none;
     outline: none;
-    /* display: flex; */
-    align-items: center;
     box-shadow: none;
     padding: 0.5rem;
-    /* margin: 1rem; */
     cursor: pointer;
 }
 
