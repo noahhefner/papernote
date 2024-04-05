@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
     "io/ioutil"
+	"strings"
 )
 
 type errorMessage struct {
@@ -110,7 +111,7 @@ func GetEditor(c *gin.Context) {
 
 	var singleNote = models.Note{
 		FileName: c.Param("filename"),
-		Content:  string(content),
+		Content:  strings.TrimSpace(string(content)),
 	}
 
 	c.HTML(http.StatusOK, "editor.html", singleNote)
@@ -149,7 +150,7 @@ func GetAllNotesForUser(c *gin.Context) {
 func UpdateNote(c *gin.Context) {
 
 	path := c.GetString("username") + "/" + c.Param("filename")
-	content := c.PostForm("editor")
+	content := strings.TrimSpace(c.PostForm("editor"))
 
 	err := os.WriteFile(path, []byte(content), 0666)
 	if err != nil {
@@ -162,7 +163,7 @@ func UpdateNote(c *gin.Context) {
 
 	var singleNote = models.Note{
 		FileName: c.Param("filename"),
-		Content:  string(content),
+		Content:  strings.TrimSpace(string(content)),
 	}
 
 	c.HTML(http.StatusOK, "editor.html", singleNote)
@@ -174,31 +175,13 @@ func UpdateNote(c *gin.Context) {
 */
 func DeleteNote(c *gin.Context) {
 
-	err := os.Chdir(c.GetString("username"))
-	if err != nil {
-		c.IndentedJSON(
-			http.StatusNotFound,
-			errorMessage{Message: "User not found: " + c.Param("user")},
-		)
-		return
-	}
+	path := c.GetString("username") + "/" + c.Param("filename")
 
-	var fileNameRequested fileName
-
-	err = c.BindJSON(&fileNameRequested)
+	err := os.Remove(path)
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusInternalServerError,
-			errorMessage{Message: "Unmarshalling request data failed."},
-		)
-		return
-	}
-
-	err = os.Remove(fileNameRequested.FileName)
-	if err != nil {
-		c.IndentedJSON(
-			http.StatusInternalServerError,
-			errorMessage{Message: "Failed to delete note: " + fileNameRequested.FileName},
+			errorMessage{Message: "Failed to delete note." },
 		)
 		return
 	}

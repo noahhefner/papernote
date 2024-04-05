@@ -38,7 +38,7 @@ func main() {
 		authorized.GET("/notes/:filename", handlers.GetNoteByFilename)
 		authorized.GET("/notes/:filename/edit", handlers.GetEditor)
 		authorized.POST("/notes/:filename", handlers.UpdateNote)
-		authorized.DELETE("/notes", handlers.DeleteNote)
+		authorized.DELETE("/notes/:filename", handlers.DeleteNote)
 
 		authorized.GET("/users/:username", handlers.GetUser)
 

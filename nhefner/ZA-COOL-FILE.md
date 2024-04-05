@@ -1,3 +1,3 @@
-# Cool file contents
+# Cool contents
 
-This is a cool file
+This is a really cool file
