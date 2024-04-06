@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/grid.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/login.css" />
+  </head>
+  <body>
+    <main>
+      <form action="/users" method="POST">
+        <input
+          id="username"
+          name="username"
+          type="text"
+          placeholder="Username"
+        />
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Password"
+        />
+        <input type="submit" value="Create Account" />
+      </form>
+    </main>
+  </body>
+</html>

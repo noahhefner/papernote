@@ -44,19 +44,27 @@ func main() {
 
 	}
 
-	router.POST("/login", handlers.Login)
+	// Create new user
 	router.POST("/users", handlers.AddUser)
+	
+	router.GET("/signup", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "signup.html", gin.H{
+			"name": "signup",
+		})
+	})
+
+	router.POST("/login", handlers.Login)
+	router.GET("/login", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "login.html", gin.H{
+			"name": "login",
+		})
+	})
+	router.POST("/logout", handlers.Logout)
 
 	router.GET("/", func(c *gin.Context) {
 		// If the user is authenticated, they will be redirected to /notes
 		// Otherwise, the auth middleware will redirect to /login
 		c.Redirect(http.StatusTemporaryRedirect, "/notes")
-	})
-
-	router.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", gin.H{
-			"name": "login",
-		})
 	})
 
 	router.Run("localhost:8080")
