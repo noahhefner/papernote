@@ -189,3 +189,39 @@ func DeleteNote(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, "Deleted note.")
 
 }
+
+/*
+When the user clicks the edit icon next to the file name in the editor, return
+an input box where they can set a new file name.
+*/
+func EditNoteName(c *gin.Context) {
+
+	context := fileName {
+		FileName: c.Param("filename"),
+	}
+
+	c.HTML(http.StatusOK, "rename.html", context)
+
+}
+
+/*
+Rename the file on the server.
+*/
+func RenameNote(c *gin.Context) {
+
+	pathOld := c.GetString("username") + "/" + c.Param("filenameOld")
+	pathNew := c.GetString("username") + "/" + c.Param("filenameNew")
+
+
+	e := os.Rename(pathOld, pathNew) 
+    if e != nil { 
+        panic(e)
+    }
+
+	context := fileName {
+		FileName: c.Param("filename"),
+	}
+
+	c.HTML(http.StatusOK, "newFilename.html", context)
+
+}

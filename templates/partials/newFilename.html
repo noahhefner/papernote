@@ -1,0 +1,11 @@
+<h1 id="filename">{{ .FileName }}</h1>
+<input
+  hx-get="/notes/editNoteName/{{ .FileName }}"
+  hx-trigger="click"
+  hx-target="#filename-container"
+  hx-swap="innerHTML"
+  type="image"
+  src="/static/img/edit.svg"
+  name="back"
+  id="back"
+/>

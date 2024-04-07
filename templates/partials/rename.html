@@ -1,0 +1,13 @@
+<form>
+  <input type="text" value="{{ .FileName }}" />
+  <input
+    type="image"
+    src="/static/img/save.svg"
+    name="saveNewName"
+    id="saveNewName"
+    hx-post="/notes/rename/{{ .FileName }}/"
+    hx-trigger="click"
+    hx-target="#filename-container"
+    hx-swap="innerHTML"
+  />
+</form>
