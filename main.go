@@ -36,6 +36,7 @@ func main() {
 		authorized.POST("/notes", handlers.CreateNote)
 		authorized.GET("/notes", handlers.GetAllNotesForUser)
 		authorized.GET("/notes/:filename", handlers.GetNoteByFilename)
+		authorized.GET("/notes/fullpagenoteview/:filename", handlers.GetFullPageNoteView)
 		authorized.GET("/notes/edit/:filename", handlers.GetEditor)
 		authorized.GET("/notes/editNoteName/:filename", handlers.EditNoteName)
 		authorized.POST("/notes/rename", handlers.RenameNote)

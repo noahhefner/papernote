@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ .FileName }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/grid.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/common.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/editor.css" />
+  </head>
+  <body>
+    <div class="note-filename-container" id="filename-container">
+      <h1 id="filename">{{ .FileName }}</h1>
+      <input
+        hx-get="/notes/editNoteName/{{ .FileName }}"
+        hx-trigger="click"
+        hx-target="#filename-container"
+        hx-swap="innerHTML"
+        type="image"
+        src="/static/img/edit.svg"
+        name="editNoteName"
+        id="editNoteName"
+      />
+    </div>
+    <form id="form-editor" class="form-editor">
+      <main class="app-container">
+        <div class="action-bar">
+          <div class="action-bar-subsection">
+            <a href="/notes">
+              <img src="/static/img/home.svg" alt="home_icon" />
+            </a>
+          </div>
+          <div class="action-bar-subsection">
+            <img src="/static/img/delete.svg" alt="del_icon" />
+          </div>
+        </div>
+        <div>{{ template "notePreview.html" . }}</div>
+      </main>
+    </form>
+  </body>
+</html>

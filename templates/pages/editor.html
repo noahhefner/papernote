@@ -24,46 +24,45 @@
         id="editNoteName"
       />
     </div>
-    <form id="form-editor" class="form-editor">
-      <main class="app-container">
-        <div class="action-bar">
-          <div class="action-bar-subsection">
+    <main id="app-container" class="app-container">
+      <div class="action-bar">
+        <div class="action-bar-subsection">
+          <a href="/notes">
+            <img src="/static/img/home.svg" alt="home_icon" />
+          </a>
+          <form
+            hx-boost="true"
+            method="post"
+            action="/notes/{{ .FileName }}"
+            hx-include="[name='editor']"
+            class="form-save-button"
+          >
             <input
-              type="image"
-              src="/static/img/back.svg"
-              name="back"
-              id="back"
-            />
-            <input
+              hx-trigger="click"
               type="image"
               src="/static/img/save.svg"
               name="save"
               id="save"
             />
-            <img src="/static/img/image.svg" alt="img_icon" />
-          </div>
-          <div class="action-bar-subsection">
-            <input
-              type="image"
-              src="/static/img/delete.svg"
-              name="save"
-              id="save"
-            />
-          </div>
+          </form>
+          <img src="/static/img/image.svg" alt="img_icon" />
         </div>
-        <div class="writing-wrapper">
-          <div class="grid-container two-columns">
-            <div class="grid-markdown markdown-column">
-              <textarea id="editor" name="editor" rows="24">
+        <div class="action-bar-subsection">
+          <img src="/static/img/delete.svg" alt="del_icon" />
+        </div>
+      </div>
+      <div class="writing-wrapper">
+        <div class="grid-container two-columns">
+          <div class="grid-markdown markdown-column">
+            <textarea id="editor" name="editor" rows="24">
 {{ .Content }}</textarea
-              >
-              <!-- Have to have the {{ .Content }} like this or the browser will render extra spaces on the first line -->
-            </div>
-            <div id="rendered" class="grid-rendered rendered-column"></div>
+            >
+            <!-- Have to have the {{ .Content }} like this or the browser will render extra spaces on the first line -->
           </div>
+          <div id="rendered" class="grid-rendered rendered-column"></div>
         </div>
-      </main>
-    </form>
+      </div>
+    </main>
     <script>
       // Render markdown client-side
       var textarea = document.getElementById("editor");
@@ -75,31 +74,6 @@
       renderMarkdown();
       // Rerender on update
       textarea.addEventListener("input", renderMarkdown);
-
-      // Handle form submission
-      let form = document.getElementById("form-editor");
-      var fileName = "{{ .FileName }}";
-
-      function submitForm(event) {
-        event.preventDefault();
-
-        let action = event.submitter.name;
-
-        switch (action) {
-          case "save":
-            this.method = "post";
-            this.action = "/notes/" + fileName;
-            break;
-          case "back":
-            this.method = "get";
-            this.action = "/notes";
-            break;
-        }
-
-        this.submit();
-      }
-
-      form.addEventListener("submit", submitForm);
     </script>
   </body>
 </html>

@@ -1,9 +1,5 @@
-<div class="note-preview-title">
-    <h2>{{ .FileName }}</h2>
-</div>
-<div id="rendered" class="rendered">
-</div>
+<div id="rendered" class="rendered"></div>
 <script>
-    var markdown = "{{ .Content }}";
-    document.getElementById('rendered').innerHTML = marked.parse(markdown);
+  var markdown = "{{ .Content }}";
+  document.getElementById("rendered").innerHTML = marked.parse(markdown);
 </script>

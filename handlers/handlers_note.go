@@ -8,7 +8,6 @@ import (
 	"noahhefner/notes/models"
 	"os"
 	"strings"
-	"time"
 )
 
 type errorMessage struct {
@@ -89,12 +88,32 @@ func GetNoteByFilename(c *gin.Context) {
 		Content:  string(content),
 	}
 
-	c.Header("Cache-Control", "max-age=3600") // Cache response for 1 hour
-	expires := time.Now().Add(time.Hour)
-	c.Header("Expires", expires.Format(time.RFC1123)) // Example expiration date
-
 	c.HTML(http.StatusOK, "notePreview.html", singleNote)
-	//c.HTML(http.StatusOK, "editor.html", singleNote)
+}
+
+/*
+Full page view of a single note, no editor.
+*/
+func GetFullPageNoteView(c *gin.Context) {
+
+	var path = c.GetString("username") + "/" + c.Param("filename")
+
+	content, err := os.ReadFile(path)
+	if err != nil {
+		c.IndentedJSON(
+			http.StatusNotFound,
+			errorMessage{Message: "File not found."},
+		)
+		return
+	}
+
+	var singleNote = models.Note{
+		FileName: c.Param("filename"),
+		Content:  string(content),
+	}
+
+	c.HTML(http.StatusOK, "fullpagenoteview.html", singleNote)
+
 }
 
 func GetEditor(c *gin.Context) {
@@ -162,12 +181,7 @@ func UpdateNote(c *gin.Context) {
 		return
 	}
 
-	var singleNote = models.Note{
-		FileName: c.Param("filename"),
-		Content:  strings.TrimSpace(string(content)),
-	}
-
-	c.HTML(http.StatusOK, "editor.html", singleNote)
+	c.Redirect(http.StatusFound, "/notes/fullpagenoteview/" + c.Param("filename"))
 
 }
 
