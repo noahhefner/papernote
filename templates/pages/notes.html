@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/notes.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/common.css" />
     <link rel="stylesheet" type="text/css" href="/static/css/header.css" />
+    <link rel="stylesheet" type="text/css" href="/static/css/actionbar.css" />
   </head>
   <body>
     {{ template "header.html" . }}
@@ -28,6 +29,10 @@
               hx-trigger="mouseenter"
               hx-cache="true"
             >
+              <a
+                href="/notes/fullpagenoteview/{{ . }}"
+                class="fullpage-link"
+              ></a>
               <a href="/notes/edit/{{ . }}" class="edit-link"></a>
               <p class="note-title">{{ . }}</p>
             </div>

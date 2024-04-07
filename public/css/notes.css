@@ -1,129 +1,155 @@
 main {
-    border-radius: 1rem;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    height: 92%;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  height: 92%;
 }
 
 .new-note-wrapper {
-    height: 64px;
-    width: 100%;
-    border-bottom: 1px solid #ccc;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    box-sizing: border-box;
-    flex-shrink: 0;
+  height: 64px;
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .note-preview-title {
-    height: 64px;
-    box-sizing: border-box;
-    width: 100%;
-    align-items: center;
-    display: flex;
-    border-bottom: 1px solid #ccc;
+  height: 64px;
+  box-sizing: border-box;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  border-bottom: 1px solid #ccc;
 }
 
 .rendered {
-    overflow: scroll;
+  overflow: scroll;
 }
 
 .new-note {
-    text-align: center;
-    margin: 1rem;
-    width: calc(100% - 2rem);
+  text-align: center;
+  margin: 1rem;
+  width: calc(100% - 2rem);
 }
 
 .note-list {
-    width: 100%;
-    overflow: scroll;
+  width: 100%;
+  overflow: scroll;
 }
 
 .note-entry-wrapper {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-    margin-right: 1rem;
-    position: relative;
-    border-bottom: 1px solid #ccc;
-    box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  position: relative;
+  border-bottom: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
 .note-entry-wrapper p {
-    cursor: default;
+  cursor: default;
 }
 
 .note-title {
-    padding: 1rem 0;
-    margin: 0;
-    transition: padding-left 0.3s ease;
+  padding: 1rem 0;
+  margin: 0;
+  transition: padding-left 0.3s ease;
 }
 
 .preview {
-    padding: 1rem;
+  padding: 1rem;
 }
 
 /* edit link icon */
 
 .edit-link {
-    background-image: url("/static/img/edit.svg");
-    background-size: cover;
-    height: 1.1rem;
-    width: 1.1rem;
-    display: inline-block;
-    background-repeat: no-repeat;
-    position: absolute;
-    margin: 0;
-    padding: 0;
-    left: 0;
-    transition: opacity 0.3s ease;
+  background-image: url("/static/img/edit.svg");
+  background-size: cover;
+  height: 1.1rem;
+  width: 1.1rem;
+  display: inline-block;
+  background-repeat: no-repeat;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: 30px;
+  transition: opacity 0.3s ease;
 }
 
 /* show/hide edit link on hover */
 
 .note-entry-wrapper:hover .edit-link {
-    opacity: 1;
+  opacity: 1;
 }
 
 .note-entry-wrapper:not(:hover) .edit-link {
-    opacity: 0;
+  opacity: 0;
 }
 
 /* shift note title left/right on hover */
 
 .note-entry-wrapper:hover .note-title {
-    padding-left: 30px;
+  padding-left: 60px;
 }
 
 .note-entry-wrapper:not(:hover) .note-title {
-    padding-left: 0px;
+  padding-left: 0px;
+}
+
+/* full page view link */
+
+.fullpage-link {
+  background-image: url("/static/img/fullpage.svg");
+  background-size: cover;
+  height: 1.1rem;
+  width: 1.1rem;
+  display: inline-block;
+  background-repeat: no-repeat;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* show/hide fullpage link on hover */
+
+.note-entry-wrapper:hover .fullpage-link {
+  opacity: 1;
+}
+
+.note-entry-wrapper:not(:hover) .fullpage-link {
+  opacity: 0;
 }
 
 /* Layout */
 
 /* Flexbox container */
 .note-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    align-items: flex-start;
-    width: 100%;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
 }
 
 .left-pane {
-    height: 100%;
-    width: 25%;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  width: 25%;
+  display: flex;
+  flex-direction: column;
 }
 
 .right-pane {
-    height: 100%;
-    width: calc(75% - 2rem);
-    border-left: 1px solid #ccc;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    display: flex;
-    flex-direction: column;
+  height: 100%;
+  width: calc(75% - 2rem);
+  border-left: 1px solid #ccc;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
 }
