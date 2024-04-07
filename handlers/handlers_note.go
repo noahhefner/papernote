@@ -1,13 +1,14 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
 	"net/http"
 	"noahhefner/notes/models"
 	"os"
-	"time"
-    "io/ioutil"
 	"strings"
+	"time"
 )
 
 type errorMessage struct {
@@ -20,13 +21,13 @@ type fileName struct {
 
 type notesPageContext struct {
 	Username string
-	Names []string
+	Names    []string
 }
 
 type FileNode struct {
-    Name     string      `json:"name"`
-    IsDir    bool        `json:"isDir"`
-    Children []*FileNode `json:"children,omitempty"`
+	Name     string      `json:"name"`
+	IsDir    bool        `json:"isDir"`
+	Children []*FileNode `json:"children,omitempty"`
 }
 
 /*
@@ -68,7 +69,7 @@ func CreateNote(c *gin.Context) {
 }
 
 /*
-  Get a single note by id.
+Get a single note by id.
 */
 func GetNoteByFilename(c *gin.Context) {
 
@@ -88,9 +89,9 @@ func GetNoteByFilename(c *gin.Context) {
 		Content:  string(content),
 	}
 
-	c.Header("Cache-Control", "max-age=3600")  // Cache response for 1 hour
-    expires := time.Now().Add(time.Hour)
-    c.Header("Expires", expires.Format(time.RFC1123))  // Example expiration date
+	c.Header("Cache-Control", "max-age=3600") // Cache response for 1 hour
+	expires := time.Now().Add(time.Hour)
+	c.Header("Expires", expires.Format(time.RFC1123)) // Example expiration date
 
 	c.HTML(http.StatusOK, "notePreview.html", singleNote)
 	//c.HTML(http.StatusOK, "editor.html", singleNote)
@@ -118,26 +119,26 @@ func GetEditor(c *gin.Context) {
 }
 
 /*
-  Returns a list of the titles of a single users notes.
+Returns a list of the titles of a single users notes.
 */
 func GetAllNotesForUser(c *gin.Context) {
 
 	// TODO: Validate user dir before proceeding
 	files, err := ioutil.ReadDir("./" + c.GetString("username"))
-    if err != nil {
-        panic(err)
-    }
+	if err != nil {
+		panic(err)
+	}
 
 	var filenames []string
 
-    for _, file := range files {
+	for _, file := range files {
 		// TODO: Validate file type is .md
 		filenames = append(filenames, file.Name())
-    }
+	}
 
-	context := notesPageContext {
+	context := notesPageContext{
 		Username: c.GetString("username"),
-		Names: filenames,
+		Names:    filenames,
 	}
 
 	c.HTML(http.StatusOK, "notes.html", context)
@@ -145,7 +146,7 @@ func GetAllNotesForUser(c *gin.Context) {
 }
 
 /*
-  Update an existing note.
+Update an existing note.
 */
 func UpdateNote(c *gin.Context) {
 
@@ -171,7 +172,7 @@ func UpdateNote(c *gin.Context) {
 }
 
 /*
-  Delete a note.
+Delete a note.
 */
 func DeleteNote(c *gin.Context) {
 
@@ -181,7 +182,7 @@ func DeleteNote(c *gin.Context) {
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusInternalServerError,
-			errorMessage{Message: "Failed to delete note." },
+			errorMessage{Message: "Failed to delete note."},
 		)
 		return
 	}
@@ -196,7 +197,7 @@ an input box where they can set a new file name.
 */
 func EditNoteName(c *gin.Context) {
 
-	context := fileName {
+	context := fileName{
 		FileName: c.Param("filename"),
 	}
 
@@ -209,19 +210,17 @@ Rename the file on the server.
 */
 func RenameNote(c *gin.Context) {
 
-	pathOld := c.GetString("username") + "/" + c.Param("filenameOld")
-	pathNew := c.GetString("username") + "/" + c.Param("filenameNew")
+	pathOld := c.GetString("username") + "/" + c.PostForm("oldFileName")
+	pathNew := c.GetString("username") + "/" + c.PostForm("newFileName")
 
+	fmt.Print(pathOld)
+	fmt.Print(pathNew)
 
-	e := os.Rename(pathOld, pathNew) 
-    if e != nil { 
-        panic(e)
-    }
-
-	context := fileName {
-		FileName: c.Param("filename"),
+	e := os.Rename(pathOld, pathNew)
+	if e != nil {
+		panic(e)
 	}
 
-	c.HTML(http.StatusOK, "newFilename.html", context)
+	c.Redirect(http.StatusFound, "/notes/edit/"+c.PostForm("newFileName"))
 
 }

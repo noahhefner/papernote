@@ -4,8 +4,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
-	//"io/ioutil"
-	//"os"
 	"noahhefner/notes/database"
 	"noahhefner/notes/models"
 )
@@ -30,7 +28,7 @@ func AddUser(c *gin.Context) {
 
 	password = string(hashedPassword)
 
-	newUser := models.User {
+	newUser := models.User{
 		Username: username,
 		Password: password,
 	}
@@ -41,34 +39,8 @@ func AddUser(c *gin.Context) {
 		return
 	}
 
-	// The user folder may already exist if, for example, you are importing
-	// notes from another application. Go ahead and attempt to read the users
-	// folder.
-/*
-	files, err := ioutil.ReadDir("./" + username)
-    if err != nil {
-		// Only create user folder if it doesn't already exist
-        err = os.Mkdir("./" + username, 0755)
-		if err != nil {
-			panic(err)
-		}
-    }
-
-	var filenames []string
-
-    for _, file := range files {
-		// TODO: Validate file type is .md
-		filenames = append(filenames, file.Name())
-    }
-
-	context := notesPageContext {
-		Username: username,
-		Names: filenames,
-	}
-	*/
-
 	// Redirect to the /notes page
-    c.Redirect(http.StatusFound, "/login")
+	c.Redirect(http.StatusFound, "/login")
 
 }
 

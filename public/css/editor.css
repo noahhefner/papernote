@@ -1,7 +1,7 @@
 main {
   border-radius: 0.25rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  height: 94%;
+  height: 100%;
 }
 
 textarea {
@@ -45,9 +45,10 @@ textarea {
   width: 1400px;
   margin-left: auto;
   margin-right: auto;
-  height: 8%;
+  height: 6%;
   display: flex;
   align-items: center;
+  gap: 1rem;
 }
 
 .note-filename-container h1 {
@@ -82,7 +83,7 @@ textarea {
 
 .form-editor {
   width: 100%;
-  height: calc(100% - 1rem); /* 1rem bottom padding in body */
+  height: 94%;
   margin: 0;
   padding: 0;
   display: block;

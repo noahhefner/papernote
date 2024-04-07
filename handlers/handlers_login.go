@@ -25,16 +25,15 @@ func Login(c *gin.Context) {
 	c.SetCookie("jwt", token, 3600, "/", "localhost", false, true)
 
 	c.Redirect(http.StatusFound, "/notes")
-	
+
 }
 
 func Logout(c *gin.Context) {
 
-    // Clear the JWT token cookie
-    c.SetCookie("jwt", "", -1, "/", "", false, true)
+	// Clear the JWT token cookie
+	c.SetCookie("jwt", "", -1, "/", "", false, true)
 
-    // Redirect to login page
-    c.Redirect(http.StatusTemporaryRedirect, "/login")
-	
+	// Redirect to login page
+	c.Redirect(http.StatusTemporaryRedirect, "/login")
+
 }
-
