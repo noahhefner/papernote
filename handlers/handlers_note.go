@@ -34,27 +34,10 @@ Create a new note.
 */
 func CreateNote(c *gin.Context) {
 
-	var createdNote models.Note
+	filename := c.PostForm("newNoteName")
+	path := c.GetString("username") + "/" + filename
 
-	err := c.BindJSON(&createdNote)
-	if err != nil {
-		c.IndentedJSON(
-			http.StatusInternalServerError,
-			errorMessage{Message: "Unmarshalling request data failed."},
-		)
-		return
-	}
-
-	err = os.Chdir(c.GetString("username"))
-	if err != nil {
-		c.IndentedJSON(
-			http.StatusNotFound,
-			errorMessage{Message: "User not found: " + c.Param("user")},
-		)
-		return
-	}
-
-	err = os.WriteFile(createdNote.FileName, []byte(createdNote.Content), 0666)
+	err := os.WriteFile(path, []byte(""), 0666)
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusInternalServerError,
@@ -63,7 +46,7 @@ func CreateNote(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusCreated, createdNote)
+	c.Redirect(http.StatusFound, "/notes")
 
 }
 
