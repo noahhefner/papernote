@@ -5,7 +5,7 @@ main {
 }
 
 .new-note-wrapper {
-  height: 64px;
+  /*height: 64px;*/
   width: 100%;
   border-bottom: 1px solid #ccc;
   justify-content: center;
@@ -75,7 +75,7 @@ main {
   position: absolute;
   margin: 0;
   padding: 0;
-  left: 30px;
+  left: 60px;
   transition: opacity 0.3s ease;
 }
 
@@ -92,7 +92,7 @@ main {
 /* shift note title left/right on hover */
 
 .note-entry-wrapper:hover .note-title {
-  padding-left: 60px;
+  padding-left: 90px;
 }
 
 .note-entry-wrapper:not(:hover) .note-title {
@@ -111,7 +111,7 @@ main {
   position: absolute;
   margin: 0;
   padding: 0;
-  left: 0;
+  left: 30px;
   transition: opacity 0.3s ease;
 }
 
@@ -122,6 +122,26 @@ main {
 }
 
 .note-entry-wrapper:not(:hover) .fullpage-link {
+  opacity: 0;
+}
+
+/* delete note link */
+
+.delete-link {
+  height: 1.1rem;
+  width: 1.1rem;
+  display: inline-block;
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  left: 0;
+  transition: opacity 0.3s ease;
+}
+
+.note-entry-wrapper:hover .delete-link {
+  opacity: 1;
+}
+.note-entry-wrapper:not(:hover) .delete-link {
   opacity: 0;
 }
 

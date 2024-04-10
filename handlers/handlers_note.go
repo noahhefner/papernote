@@ -95,7 +95,7 @@ func GetFullPageNoteView(c *gin.Context) {
 		Content:  string(content),
 	}
 
-	c.HTML(http.StatusOK, "fullpagenoteview.html", singleNote)
+	c.HTML(http.StatusFound, "fullpagenoteview.html", singleNote)
 
 }
 
@@ -117,7 +117,7 @@ func GetEditor(c *gin.Context) {
 		Content:  strings.TrimSpace(string(content)),
 	}
 
-	c.HTML(http.StatusOK, "editor.html", singleNote)
+	c.HTML(http.StatusFound, "editor.html", singleNote)
 }
 
 /*
@@ -143,7 +143,7 @@ func GetAllNotesForUser(c *gin.Context) {
 		Names:    filenames,
 	}
 
-	c.HTML(http.StatusOK, "notes.html", context)
+	c.HTML(http.StatusFound, "notes.html", context)
 
 }
 
@@ -184,7 +184,7 @@ func DeleteNote(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, "Deleted note.")
+	c.Redirect(http.StatusOK, "/notes")
 
 }
 
