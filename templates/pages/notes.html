@@ -41,6 +41,10 @@
                 type="image"
                 src="/static/img/delete-notes.svg"
                 class="delete-link"
+                hx-delete="/notes/{{ . }}"
+                hx-trigger="click"
+                hx-target="closest div"
+                hx-swap="outerHTML"
               />
               <a
                 href="/notes/fullpagenoteview/{{ . }}"

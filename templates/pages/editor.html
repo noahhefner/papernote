@@ -18,16 +18,6 @@
   <body>
     <div class="note-filename-container" id="filename-container">
       <h1 id="filename">{{ .FileName }}</h1>
-      <input
-        hx-get="/notes/editNoteName/{{ .FileName }}"
-        hx-trigger="click"
-        hx-target="#filename-container"
-        hx-swap="innerHTML"
-        type="image"
-        src="/static/img/edit.svg"
-        name="editNoteName"
-        id="editNoteName"
-      />
     </div>
     <main id="app-container" class="app-container">
       <div class="action-bar">

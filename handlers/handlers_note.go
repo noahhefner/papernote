@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
@@ -184,40 +183,6 @@ func DeleteNote(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusOK, "/notes")
-
-}
-
-/*
-When the user clicks the edit icon next to the file name in the editor, return
-an input box where they can set a new file name.
-*/
-func EditNoteName(c *gin.Context) {
-
-	context := fileName{
-		FileName: c.Param("filename"),
-	}
-
-	c.HTML(http.StatusOK, "rename.html", context)
-
-}
-
-/*
-Rename the file on the server.
-*/
-func RenameNote(c *gin.Context) {
-
-	pathOld := c.GetString("username") + "/" + c.PostForm("oldFileName")
-	pathNew := c.GetString("username") + "/" + c.PostForm("newFileName")
-
-	fmt.Print(pathOld)
-	fmt.Print(pathNew)
-
-	e := os.Rename(pathOld, pathNew)
-	if e != nil {
-		panic(e)
-	}
-
-	c.Redirect(http.StatusFound, "/notes/edit/"+c.PostForm("newFileName"))
+	c.String(http.StatusOK, "")
 
 }
