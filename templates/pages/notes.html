@@ -15,46 +15,8 @@
     {{ template "header.html" . }}
     <main class="app-container">
       <div class="note-container">
-        <div class="left-pane">
-          <div class="new-note-wrapper">
-            <button
-              hx-get="/clickedNewNote"
-              hx-trigger="click"
-              hx-target="this"
-              hx-swap="outerHTML"
-              class="new-note"
-            >
-              New Note
-            </button>
-          </div>
-          <div class="note-list">
-            {{ range .Names }}
-            <div
-              class="note-entry-wrapper"
-              hx-get="/notes/{{ . }}"
-              hx-target="#preview"
-              hx-swap="innerHTML"
-              hx-trigger="mouseenter"
-              hx-cache="true"
-            >
-              <input
-                type="image"
-                src="/static/img/delete-notes.svg"
-                class="delete-link"
-                hx-delete="/notes/{{ . }}"
-                hx-trigger="click"
-                hx-target="closest div"
-                hx-swap="outerHTML"
-              />
-              <a
-                href="/notes/fullpagenoteview/{{ . }}"
-                class="fullpage-link"
-              ></a>
-              <a href="/notes/edit/{{ . }}" class="edit-link"></a>
-              <p class="note-title">{{ . }}</p>
-            </div>
-            {{ end }}
-          </div>
+        <div class="left-pane" id="left-pane">
+          {{ template "noteList.html" . }}
         </div>
         <div id="preview" class="right-pane"></div>
       </div>

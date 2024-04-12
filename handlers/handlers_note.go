@@ -13,19 +13,13 @@ type errorMessage struct {
 	Message string `json:"message"`
 }
 
-type fileName struct {
-	FileName string `json:"filename"`
-}
-
 type notesPageContext struct {
-	Username string
-	Names    []string
+	Username  string
+	FileNames []string
 }
 
-type FileNode struct {
-	Name     string      `json:"name"`
-	IsDir    bool        `json:"isDir"`
-	Children []*FileNode `json:"children,omitempty"`
+type noteList struct {
+	FileNames []string
 }
 
 /*
@@ -45,7 +39,11 @@ func CreateNote(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, "/notes")
+	context := noteList{
+		FileNames: getFileListForUser(c.GetString("username")),
+	}
+
+	c.HTML(http.StatusOK, "noteList.html", context)
 
 }
 
@@ -98,6 +96,9 @@ func GetFullPageNoteView(c *gin.Context) {
 
 }
 
+/*
+Get the editor view and populate it with data from filename.
+*/
 func GetEditor(c *gin.Context) {
 
 	var path = c.GetString("username") + "/" + c.Param("filename")
@@ -124,22 +125,9 @@ Returns a list of the titles of a single users notes.
 */
 func GetAllNotesForUser(c *gin.Context) {
 
-	// TODO: Validate user dir before proceeding
-	files, err := ioutil.ReadDir("./" + c.GetString("username"))
-	if err != nil {
-		panic(err)
-	}
-
-	var filenames []string
-
-	for _, file := range files {
-		// TODO: Validate file type is .md
-		filenames = append(filenames, file.Name())
-	}
-
 	context := notesPageContext{
-		Username: c.GetString("username"),
-		Names:    filenames,
+		Username:  c.GetString("username"),
+		FileNames: getFileListForUser(c.GetString("username")),
 	}
 
 	c.HTML(http.StatusFound, "notes.html", context)
@@ -163,7 +151,7 @@ func UpdateNote(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, "/notes/fullpagenoteview/" + c.Param("filename"))
+	c.Redirect(http.StatusFound, "/notes/fullpagenoteview/"+c.Param("filename"))
 
 }
 
@@ -185,4 +173,25 @@ func DeleteNote(c *gin.Context) {
 
 	c.String(http.StatusOK, "")
 
+}
+
+// Helpers ---------------------------------------------------------------------
+
+/*
+Get filenames of all a given users notes.
+*/
+func getFileListForUser(username string) []string {
+
+	files, err := ioutil.ReadDir("./" + username)
+	if err != nil {
+		panic(err)
+	}
+
+	var filenames []string
+
+	for _, file := range files {
+		filenames = append(filenames, file.Name())
+	}
+
+	return filenames
 }
