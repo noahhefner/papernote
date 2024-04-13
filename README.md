@@ -1,6 +1,6 @@
 # Notes
 
-Self-hostable, no-database web app for markdown note-taking, written in Golang and utilizing HTMX. Store notes in plain markdown files for easy import/export. Multiple user support.
+Self-hostable web app for markdown note-taking, written in Golang and utilizing HTMX. Store notes in plain markdown files for easy import/export. Multiple user support via SQLite.
 
 ![wip](/screenshots/wip.jpg)
 
