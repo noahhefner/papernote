@@ -26,6 +26,9 @@
           type="password"
           placeholder="Password"
         />
+        {{ if .Error }}
+        <p>Invalid Username or Password</p>
+        {{ end }}
         <input type="submit" value="Login" />
       </form>
       <a href="/signup">Create an account</a>

@@ -6,13 +6,25 @@ import (
 	"noahhefner/notes/middlewares"
 )
 
+type loginResponse struct {
+	Error bool
+}
+
+/*
+Validate user credentials, set jwt on successful login.
+*/
 func Login(c *gin.Context) {
 
 	username := c.PostForm("username")
 	password := c.PostForm("password")
 
 	if !middlewares.AuthenticateUser(username, password) {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+
+		context := loginResponse{
+			Error: true,
+		}
+
+		c.HTML(http.StatusUnauthorized, "login.html", context)
 		return
 	}
 
@@ -24,16 +36,19 @@ func Login(c *gin.Context) {
 
 	c.SetCookie("jwt", token, 3600, "/", "localhost", false, true)
 
-	c.Redirect(http.StatusFound, "/notes")
+	c.Redirect(http.StatusSeeOther, "/notes")
 
 }
 
+/*
+Clear JWT in the clients browser and redirect to login page.
+*/
 func Logout(c *gin.Context) {
 
 	// Clear the JWT token cookie
 	c.SetCookie("jwt", "", -1, "/", "", false, true)
 
-	// Redirect to login page
-	c.Redirect(http.StatusTemporaryRedirect, "/login")
+	// Client-side redirect to login page
+	c.Header("HX-Redirect", "/login")
 
 }
