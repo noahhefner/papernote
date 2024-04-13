@@ -1,7 +1,7 @@
 main {
-  border-radius: 1rem;
+  border-radius: 0.25rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  height: 92%;
+  height: 94%;
 }
 
 .new-note-wrapper {
@@ -13,12 +13,13 @@ main {
   box-sizing: border-box;
   flex-shrink: 0;
   flex-direction: column;
-  padding: 1rem;
+  height: 6%;
 }
 
 .new-note-input-wrapper {
-  padding: 1rem;
   width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   border-bottom: 1px solid #ccc;
   justify-content: center;
   align-items: center;
@@ -30,15 +31,15 @@ main {
 }
 
 .new-note-input {
-  width: 100%;
+  width: calc(100% - 2rem);
   box-sizing: border-box;
   padding: 0.25rem;
 }
 
 .new-note-create-button {
   text-align: center;
-  width: 100%;
   padding: 0.25rem;
+  width: calc(100% - 2rem);
 }
 
 .note-preview-title {
@@ -52,17 +53,35 @@ main {
 
 .rendered {
   overflow: scroll;
+  -ms-overflow-style: none; /* Hide scrollbar on IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar on Firefox */
+}
+
+.rendered::-webkit-scrollbar {
+  display: none; /* Hide scrollbar on Chrome */
+}
+
+.rendered img {
+  width: calc(100% - 2rem);
+  margin: 1rem;
 }
 
 .new-note {
   text-align: center;
   padding: 0.25rem;
-  width: 100%;
+  width: calc(100% - 2rem);
 }
 
 .note-list {
   width: 100%;
+  height: 94%;
   overflow: scroll;
+  -ms-overflow-style: none; /* Hide scrollbar on IE and Edge */
+  scrollbar-width: none; /* Hide scrollbar on Firefox */
+}
+
+.note-list::-webkit-scrollbar {
+  display: none; /* Hide scrollbar on Chrome */
 }
 
 .note-entry-wrapper {

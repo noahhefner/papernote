@@ -1,4 +1,4 @@
-# `Cron`
+# Crontab
 
 `cron` is a daemon that runs on all main distributions on Unix and Linux. The purpose of the daemon is to execute commands at a given time. These jobs are commonly referred to as cronjobs. Cronjobs are often used to automate execution of tasks or scripts.
 

@@ -10,7 +10,7 @@ body {
 }
 
 button {
-  border-radius: 0.4rem;
+  border-radius: 0.25rem;
   border: 1px solid #ccc;
   appearance: none;
   outline: none;

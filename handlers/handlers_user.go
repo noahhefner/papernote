@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"noahhefner/notes/database"
 	"noahhefner/notes/models"
+	"os"
 )
 
 func AddUser(c *gin.Context) {
@@ -38,6 +39,16 @@ func AddUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
+	// Check if user directory already exists
+    _, err = os.Stat(username)
+    if os.IsNotExist(err) {
+        // Create a directory for the new user
+		err = os.Mkdir(username, 0755)
+		if err != nil {
+			panic(err)
+		}
+    }
 
 	// Redirect to the /notes page
 	c.Redirect(http.StatusFound, "/login")

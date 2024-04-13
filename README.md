@@ -1,12 +1,14 @@
 # Notes
 
-!!! Work in progress, many features currently broken. !!!
-
 Self-hostable, no-database web app for markdown note-taking, written in Golang and utilizing HTMX. Store notes in plain markdown files for easy import/export. Multiple user support.
+
+![wip](/screenshots/wip.jpg)
 
 ![notes](/screenshots/notes-view.png)
 
-![editor](/screenshots/editor.png)
+![editor](/screenshots/editor-view.png)
+
+![fullscreen](/screenshots/fullscreen-view.png)
 
 ## Development
 
@@ -15,6 +17,11 @@ Install [air](https://github.com/cosmtrek/air) for live reload. Run the air serv
 ```
 air
 ```
+
+Test user and password:
+
+- Username: `user`
+- Password: `pass`
 
 Makefile commands:
 
