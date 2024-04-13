@@ -5,7 +5,6 @@ main {
 }
 
 .new-note-wrapper {
-  /*height: 64px;*/
   width: 100%;
   border-bottom: 1px solid #ccc;
   justify-content: center;
@@ -13,6 +12,33 @@ main {
   display: flex;
   box-sizing: border-box;
   flex-shrink: 0;
+  flex-direction: column;
+  padding: 1rem;
+}
+
+.new-note-input-wrapper {
+  padding: 1rem;
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.new-note-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.25rem;
+}
+
+.new-note-create-button {
+  text-align: center;
+  width: 100%;
+  padding: 0.25rem;
 }
 
 .note-preview-title {
@@ -30,8 +56,8 @@ main {
 
 .new-note {
   text-align: center;
-  margin: 1rem;
-  width: calc(100% - 2rem);
+  padding: 0.25rem;
+  width: 100%;
 }
 
 .note-list {

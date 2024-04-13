@@ -1,8 +1,8 @@
-<div class="new-note-wrapper">
+<div class="new-note-wrapper" id="new-note-wrapper">
   <button
     hx-get="/clickedNewNote"
     hx-trigger="click"
-    hx-target="this"
+    hx-target="#new-note-wrapper"
     hx-swap="outerHTML"
     class="new-note"
   >
