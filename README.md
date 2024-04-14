@@ -1,6 +1,8 @@
-# Notes
+<center><img src="public/img/logo-text.png"></center>
 
-Self-hostable web app for markdown note-taking, written in Golang and utilizing HTMX. Store notes in plain markdown files for easy import/export. Multiple user support via SQLite.
+Self-hostable web app for markdown note-taking, written in Golang and utilizing HTMX. Notes are stored in plain markdown files. Multiple user support via SQLite.
+
+This project was heavily inspired by another excellent note taking application, [Flatnotes](https://github.com/Dullage/flatnotes).
 
 ![wip](/screenshots/wip.jpg)
 
@@ -12,7 +14,7 @@ Self-hostable web app for markdown note-taking, written in Golang and utilizing 
 
 ## Development
 
-Install [air](https://github.com/cosmtrek/air) for live reload. Run the air server:
+Install [air](https://github.com/cosmtrek/air) for Golang live reload. Run the air server:
 
 ```
 air
