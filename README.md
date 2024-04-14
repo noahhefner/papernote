@@ -4,7 +4,7 @@ Self-hostable web app for markdown note-taking, written in Golang and utilizing 
 
 This project was heavily inspired by another excellent note taking application, [Flatnotes](https://github.com/Dullage/flatnotes).
 
-![wip](/screenshots/wip.jpg)
+![wip](/screenshots/wip.png)
 
 ![notes](/screenshots/notes-view.png)
 
