@@ -26,7 +26,7 @@ Larger view of the rendered note.
 
 ## Development
 
-Install [air](https://github.com/cosmtrek/air) for Golang live reload. Run the air server:
+Install [air](https://github.com/cosmtrek/air) for Golang live reload. Run the air server and access the application at `localhost:8080`:
 
 ```
 air
