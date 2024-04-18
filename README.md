@@ -66,7 +66,7 @@ Dependencies:
 - [air](https://github.com/cosmtrek/air) (for live reload in development)
 - Optional: [Docker](https://www.docker.com/)
 
-The `test-data` directory provides a sample database and user directory with a few notes for testing purposes. `.air.toml` sets the `DATA_DIR` environment variable to `./test-data` for convenience. Note and database changes will be reflected in this directory.
+The `test-data` directory provides a sample database and user directory with a few notes for testing purposes. `.air.toml` sets the `DATA_DIR` environment variable to `./test-data` for convenience. Note and database changes will be reflected in this directory. `/test-data` is in the `.gitignore`, so changes made while testing will not be automatically committed to the remote.
 
 Test user and password:
 
