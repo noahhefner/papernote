@@ -1,0 +1,13 @@
+---
+version: "3"
+services:
+  papernote:
+    image: noahhefner/papernote:latest
+    container_name: papernote
+    volumes:
+      - /path/to/data:/data
+    ports:
+      - 8080:80
+    user: 1000:1000
+    environment:
+      JWT_SECRET: ${JWT_SECRET}

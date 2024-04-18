@@ -9,6 +9,8 @@ import (
 	"os"
 )
 
+var dbDir string = getDataDir() + "/db"
+
 func AddUser(c *gin.Context) {
 
 	username := c.PostForm("username")
@@ -41,10 +43,10 @@ func AddUser(c *gin.Context) {
 	}
 
 	// Check if user directory already exists
-    _, err = os.Stat(username)
+    _, err = os.Stat(notesDir + "/" + username)
     if os.IsNotExist(err) {
         // Create a directory for the new user
-		err = os.Mkdir(username, 0755)
+		err = os.Mkdir(notesDir + "/" + username, 0755)
 		if err != nil {
 			panic(err)
 		}

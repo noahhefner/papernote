@@ -4,16 +4,19 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/mattn/go-sqlite3"
 	"net/http"
+	"os"
 	"noahhefner/notes/database"
 	"noahhefner/notes/handlers"
 	"noahhefner/notes/middlewares"
 )
 
+var dbDir string = getDataDir() + "/db"
+
 func main() {
 
 	// Connect to SQLite database
 	var err error
-	err = database.Init("./users.db")
+	err = database.Init(dbDir + "/users.db")
 	if err != nil {
 		panic(err)
 	}
@@ -73,6 +76,15 @@ func main() {
 		c.Redirect(http.StatusTemporaryRedirect, "/notes")
 	})
 
-	router.Run("localhost:8080")
+	router.Run(":8080")
 
+}
+
+func getDataDir() string {
+	dataDir, ok := os.LookupEnv("DATA_DIR")
+	if ok {
+		return dataDir
+	} else {
+		return "/data"
+	}
 }

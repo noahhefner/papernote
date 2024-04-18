@@ -9,6 +9,8 @@ import (
 	"strings"
 )
 
+var notesDir string = getDataDir() + "/notes"
+
 type errorMessage struct {
 	Message string `json:"message"`
 }
@@ -28,7 +30,7 @@ Create a new note.
 func CreateNote(c *gin.Context) {
 
 	filename := c.PostForm("newNoteName")
-	path := c.GetString("username") + "/" + filename
+	path := notesDir + "/" + c.GetString("username") + "/" + filename
 
 	err := os.WriteFile(path, []byte(""), 0666)
 	if err != nil {
@@ -52,7 +54,7 @@ Get a single note by id.
 */
 func GetNoteByFilename(c *gin.Context) {
 
-	var path = c.GetString("username") + "/" + c.Param("filename")
+	var path = notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
 
 	content, err := os.ReadFile(path)
 	if err != nil {
@@ -76,7 +78,7 @@ Full page view of a single note, no editor.
 */
 func GetFullPageNoteView(c *gin.Context) {
 
-	var path = c.GetString("username") + "/" + c.Param("filename")
+	var path = notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
 
 	content, err := os.ReadFile(path)
 	if err != nil {
@@ -101,7 +103,7 @@ Get the editor view and populate it with data from filename.
 */
 func GetEditor(c *gin.Context) {
 
-	var path = c.GetString("username") + "/" + c.Param("filename")
+	var path = notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
 
 	content, err := os.ReadFile(path)
 	if err != nil {
@@ -139,7 +141,7 @@ Update an existing note.
 */
 func UpdateNote(c *gin.Context) {
 
-	path := c.GetString("username") + "/" + c.Param("filename")
+	path := notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
 	content := strings.TrimSpace(c.PostForm("editor"))
 
 	err := os.WriteFile(path, []byte(content), 0666)
@@ -160,7 +162,7 @@ Delete a note.
 */
 func DeleteNote(c *gin.Context) {
 
-	path := c.GetString("username") + "/" + c.Param("filename")
+	path := notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
 
 	err := os.Remove(path)
 	if err != nil {
@@ -182,7 +184,7 @@ Get filenames of all a given users notes.
 */
 func getFileListForUser(username string) []string {
 
-	files, err := ioutil.ReadDir("./" + username)
+	files, err := ioutil.ReadDir(notesDir + "/" + username)
 	if err != nil {
 		panic(err)
 	}
@@ -194,4 +196,13 @@ func getFileListForUser(username string) []string {
 	}
 
 	return filenames
+}
+
+func getDataDir() string {
+	dataDir, ok := os.LookupEnv("DATA_DIR")
+	if ok {
+		return dataDir
+	} else {
+		return "/data"
+	}
 }
