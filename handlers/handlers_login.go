@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"noahhefner/notes/middlewares"
@@ -30,6 +31,7 @@ func Login(c *gin.Context) {
 
 	token, err := middlewares.GenerateJWT(username)
 	if err != nil {
+		fmt.Print(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return
 	}
