@@ -10,6 +10,10 @@
   </head>
   <body>
     <main>
+      <div class="img-container">
+          <img src="/static/img/logo.png" alt="logo" />
+      </div>
+      <h1 class="app-name">Sign Up</h1>
       <form action="/users" method="POST">
         <input
           id="username"
@@ -25,6 +29,7 @@
         />
         <input type="submit" value="Create Account" />
       </form>
+      <a href="/login">Cancel</a>
     </main>
   </body>
 </html>

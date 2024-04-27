@@ -9,7 +9,7 @@ body {
 main {
   text-align: center;
   padding: 2rem;
-  border-radius: 1rem;
+  border-radius: 0.25rem;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -47,6 +47,7 @@ input[type="submit"] {
   align-items: center;
   box-shadow: none;
   padding: 0.5rem;
+  cursor: pointer;
 }
 
 a {
@@ -55,4 +56,8 @@ a {
 
 .app-name {
   margin-top: 0;
+}
+
+.invalid-login {
+  color: red;
 }

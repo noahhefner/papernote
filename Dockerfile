@@ -4,13 +4,17 @@ FROM golang:1.22
 
 WORKDIR /usr/src/app
 
-COPY ./server/go.mod ./server/go.sum ./
+COPY ./go.mod ./go.sum ./
 
 RUN go mod download && go mod verify
 
-COPY ./server/ .
+COPY . .
 
 RUN go build -v -o /usr/local/bin/app/ ./...
+
+# Make default db and notes directories
+RUN mkdir -p /data/db
+RUN mkdir -p /data/notes
 
 EXPOSE 8080
 

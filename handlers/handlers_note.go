@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
@@ -184,12 +185,16 @@ Get filenames of all a given users notes.
 */
 func getFileListForUser(username string) []string {
 
+	fmt.Print(notesDir + "/" + username)
+
 	files, err := ioutil.ReadDir(notesDir + "/" + username)
 	if err != nil {
 		panic(err)
 	}
 
 	var filenames []string
+
+	fmt.Print(files)
 
 	for _, file := range files {
 		filenames = append(filenames, file.Name())

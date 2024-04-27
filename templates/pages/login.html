@@ -10,11 +10,11 @@
   </head>
   <body>
     <main>
+      <div class="img-container">
+        <img src="/static/img/logo.png" alt="logo" />
+      </div>
+      <h1 class="app-name">Papernote</h1>
       <form action="/login" method="POST">
-        <div class="img-container">
-          <img src="/static/img/logo.png" alt="logo" />
-        </div>
-        <h1 class="app-name">Papernote</h1>
         <input
           id="username"
           name="username"
@@ -28,7 +28,7 @@
           placeholder="Password"
         />
         {{ if .Error }}
-        <p>Invalid Username or Password</p>
+        <p class="invalid-login">Invalid Username or Password</p>
         {{ end }}
         <input type="submit" value="Login" />
       </form>
