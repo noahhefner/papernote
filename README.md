@@ -29,10 +29,11 @@ Larger view of the rendered note.
 Papernotes can be run as a Docker container via `docker-compose`:
 
 ```yml
+# docker-compose.yml
 ---
 version: "3"
 services:
-  homer:
+  papernote:
     image: noahhefner/papernote:latest
     container_name: papernote
     volumes:
@@ -40,6 +41,13 @@ services:
     ports:
       - 8080:80
     user: 1000:1000
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+```
+
+```yml
+# .env
+JWT_SECRET=SUPER_SECRET_SECRET
 ```
 
 The `/data` directory will be structured as follows:
@@ -64,9 +72,9 @@ Dependencies:
 
 - [Golang](https://go.dev/)
 - [air](https://github.com/cosmtrek/air) (for live reload in development)
-- Optional: [Docker](https://www.docker.com/)
+- [Docker](https://www.docker.com/)
 
-The `test-data` directory provides a sample database and user directory with a few notes for testing purposes. `.air.toml` sets the `DATA_DIR` environment variable to `./test-data` for convenience. Note and database changes will be reflected in this directory. `/test-data` is in the `.gitignore`, so changes made while testing will not be automatically committed to the remote.
+The `test-data` directory provides a sample database and user directory with a few notes for testing purposes. `.air.toml` sets the `DATA_DIR` environment variable to `./test-data` for convenience. Note and database changes will be reflected in this directory. `/test-data` is in the `.gitignore`, so changes made while testing will not be committed to the remote.
 
 Test user and password:
 
