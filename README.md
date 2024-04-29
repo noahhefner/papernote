@@ -71,7 +71,7 @@ The `/data` directory will be structured as follows:
 Dependencies:
 
 - [Golang](https://go.dev/)
-- [air](https://github.com/cosmtrek/air) (for live reload in development)
+- [air](https://github.com/cosmtrek/air) (for live reload)
 - [Docker](https://www.docker.com/)
 
 The `test-data` directory provides a sample database and user directory with a few notes for testing purposes. `.air.toml` sets the `DATA_DIR` environment variable to `./test-data` for convenience. Note and database changes will be reflected in this directory. `/test-data` is in the `.gitignore`, so changes made while testing will not be committed to the remote.
