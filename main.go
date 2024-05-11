@@ -32,6 +32,10 @@ func main() {
 
 	router.Static("/static", "./public")
 
+	router.GET("/favicon.ico", func(c *gin.Context) {
+        c.File("./public/img/favicon.ico")
+    })
+
 	router.LoadHTMLGlob("templates/**/*")
 
 	authorized := router.Group("/")

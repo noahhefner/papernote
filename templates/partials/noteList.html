@@ -23,6 +23,7 @@
       class="delete-link"
       hx-delete="/notes/{{ . }}"
       hx-trigger="click"
+      hx-confirm="Delete {{ . }}?"
       hx-target="closest div"
       hx-swap="outerHTML"
     />
