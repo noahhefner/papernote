@@ -32,6 +32,10 @@ func main() {
 
 	router.Static("/static", "./public")
 
+	router.GET("/favicon.ico", func(c *gin.Context) {
+        c.File("./public/img/favicon.ico")
+    })
+
 	router.LoadHTMLGlob("templates/**/*")
 
 	authorized := router.Group("/")
@@ -56,6 +60,8 @@ func main() {
 		authorized.GET("/notes/edit/:filename", handlers.GetEditor)
 		authorized.POST("/notes/:filename", handlers.UpdateNote)
 		authorized.DELETE("/notes/:filename", handlers.DeleteNote)
+
+		authorized.GET("/search", handlers.Search)
 
 		authorized.GET("/users/:username", handlers.GetUser)
 

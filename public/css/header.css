@@ -15,6 +15,7 @@ header img {
 header h1 {
   padding: 0;
   margin: 0;
+  color: #212121;
 }
 
 header #logout-button {
@@ -30,4 +31,13 @@ header #logout-button {
   flex-direction: row;
   align-items: center;
   gap: 0.5rem;
+}
+
+.search {
+  border-radius: 0.4rem;
+  border: 1px solid #ccc;
+  appearance: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0.5rem;
 }
