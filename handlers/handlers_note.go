@@ -6,9 +6,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"noahhefner/notes/models"
+	"github.com/go-playground/validator/v10"
 	"os"
 	"strings"
 )
+
+var validate *validator.Validate
 
 var notesDir string = getDataDir() + "/notes"
 
@@ -25,19 +28,37 @@ type noteList struct {
 	FileNames []string
 }
 
+func InitFieldValidator() {
+
+	// validator.WithRequiredStructEnabled() argument will be default in
+	// validator v12
+	validate = validator.New(validator.WithRequiredStructEnabled())
+
+}
+
 /*
 Create a new note.
 */
 func CreateNote(c *gin.Context) {
 
 	filename := c.PostForm("newNoteName")
+
+	if !(validateFilename(filename)) {
+		c.IndentedJSON(
+			http.StatusBadRequest,
+			errorMessage{Message: "Invalid filename"},
+		)
+		fmt.Print("Invalid Filename!")
+		return
+	}
+
 	path := notesDir + "/" + c.GetString("username") + "/" + filename
 
 	err := os.WriteFile(path, []byte(""), 0666)
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusInternalServerError,
-			errorMessage{Message: "Failed to create file: " + c.Param("filename")},
+			errorMessage{Message: "Failed to create file."},
 		)
 		return
 	}
@@ -210,4 +231,11 @@ func getDataDir() string {
 	} else {
 		return "/data"
 	}
+}
+
+func validateFilename(filename string) bool {
+
+	// user did not include .md
+	errs := validate.Var(filename, "required,alphanum")
+	return errs == nil
 }

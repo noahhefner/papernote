@@ -25,6 +25,9 @@ func main() {
 	// Initialize JWT secret from environment variable
 	middlewares.InitJWTSecret()
 
+	// initialize validator in file handler
+	handlers.InitFieldValidator()
+
 	router := gin.Default()
 
 	router.Static("/static", "./public")
@@ -41,6 +44,11 @@ func main() {
 		authorized.GET("/clickedNewNote", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "clickedNewNote.html", gin.H{
 				"name": "clickedNewNote",
+			})
+		})
+		authorized.GET("/clickedCancelNewNote", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "newNoteButton.html", gin.H{
+				"name": "clickedCancelNewNote",
 			})
 		})
 		authorized.GET("/notes/:filename", handlers.GetNoteByFilename)

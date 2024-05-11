@@ -12,12 +12,10 @@
 <div class="note-list" id="note-list">
   {{ range .FileNames }}
   <div
+    id="{{ . }}"
     class="note-entry-wrapper"
-    hx-get="/notes/{{ . }}"
-    hx-target="#preview"
-    hx-swap="innerHTML"
-    hx-trigger="mouseenter"
-    hx-cache="true"
+    onmouseover="startTimer(this)"
+    onmouseout="clearTimer(this)"
   >
     <input
       type="image"
@@ -34,3 +32,32 @@
   </div>
   {{ end }}
 </div>
+<script>
+  /* 
+  When the user hovers over the filename div, wait for 200ms before sending
+  a request to get the file contents to populate the preview pane. If the cursor
+  is moved off of the filename div before the 200ms has elapsed, the request
+  is never sent. This prevents HTMX from firing off tons of requests if the user 
+  quickly moves the cursor up and down over the file list.
+  */
+
+  var timer;
+  var delay = 200;
+
+  function startTimer(element) {
+      timer = setTimeout(function () {
+        htmx.ajax(
+          'GET',
+          '/notes/' + element.id,
+          {
+            target: '#preview',
+            swap: 'innerHTML'
+          }
+        )
+      }, delay);
+  }
+
+  function clearTimer(element) {
+      clearTimeout(timer);
+  }
+</script>

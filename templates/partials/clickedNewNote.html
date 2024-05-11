@@ -1,4 +1,4 @@
-<div class="new-note-input-wrapper">
+<div class="new-note-input-wrapper" id="new-note-input-wrapper">
   <input
     type="text"
     name="newNoteName"
@@ -14,6 +14,15 @@
     hx-target="#left-pane"
     hx-swap="innerHTML"
     hx-include="[name='newNoteName']"
+    class="new-note-create-button"
+  />
+  <input
+    type="button"
+    value="Cancel"
+    hx-get="/clickedCancelNewNote"
+    hx-trigger="click"
+    hx-target="#new-note-input-wrapper"
+    hx-swap="outerHTML"
     class="new-note-create-button"
   />
 </div>
