@@ -57,6 +57,8 @@ func main() {
 		authorized.POST("/notes/:filename", handlers.UpdateNote)
 		authorized.DELETE("/notes/:filename", handlers.DeleteNote)
 
+		authorized.GET("/search", handlers.Search)
+
 		authorized.GET("/users/:username", handlers.GetUser)
 
 	}
