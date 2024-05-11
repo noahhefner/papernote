@@ -8,7 +8,7 @@ This project was heavily inspired by another excellent note taking application, 
 
 ## Notes Homepage
 
-Landing page for browsing your notes. Hovering over a note title in the list shows a preview to the right. Quick actions (delete, fullscreen, edit) also appear next to the note title.
+Landing page for browsing your notes. Hovering over a note title in the list shows a preview to the right. Quick actions (delete, fullscreen, edit) also appear next to the note title. Search bar allows searching for a note by title.
 
 ![notes](/screenshots/notes-view.png)
 
