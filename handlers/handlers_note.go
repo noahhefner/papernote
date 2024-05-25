@@ -141,7 +141,7 @@ func GetEditor(c *gin.Context) {
 		Content:  strings.TrimSpace(string(content)),
 	}
 
-	c.HTML(http.StatusFound, "editor.html", singleNote)
+	c.HTML(http.StatusOK, "editor.html", singleNote)
 }
 
 /*
@@ -214,8 +214,6 @@ func getFileListForUser(username string) []string {
 	}
 
 	var filenames []string
-
-	fmt.Print(files)
 
 	for _, file := range files {
 		filenames = append(filenames, file.Name())
