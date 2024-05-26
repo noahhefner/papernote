@@ -7,6 +7,7 @@ import (
 	"os"
 	"noahhefner/notes/database"
 	"noahhefner/notes/handlers"
+	"noahhefner/notes/filesystem"
 	"noahhefner/notes/middlewares"
 )
 
@@ -22,11 +23,9 @@ func main() {
 	}
 	defer database.Close()
 
-	// Initialize JWT secret from environment variable
 	middlewares.InitJWTSecret()
-
-	// initialize validator in file handler
 	handlers.InitFieldValidator()
+	filesystem.InitFileSystemModule()
 
 	router := gin.Default()
 
@@ -44,7 +43,7 @@ func main() {
 	{
 
 		authorized.POST("/notes/create", handlers.CreateNote)
-		authorized.GET("/notes", handlers.GetAllNotesForUser)
+		authorized.GET("/notes", handlers.GetNotesPage)
 		authorized.GET("/clickedNewNote", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "clickedNewNote.html", gin.H{
 				"name": "clickedNewNote",
@@ -55,7 +54,7 @@ func main() {
 				"name": "clickedCancelNewNote",
 			})
 		})
-		authorized.GET("/notes/:filename", handlers.GetNoteByFilename)
+		authorized.GET("/notes/:filename", handlers.GetNoteRenderedMarkdown)
 		authorized.GET("/notes/fullpagenoteview/:filename", handlers.GetFullPageNoteView)
 		authorized.GET("/notes/edit/:filename", handlers.GetEditor)
 		authorized.POST("/notes/:filename", handlers.UpdateNote)

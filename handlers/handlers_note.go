@@ -1,14 +1,12 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
 	"net/http"
 	"noahhefner/notes/models"
+	"noahhefner/notes/filesystem"
 	"github.com/go-playground/validator/v10"
 	"os"
-	"strings"
 )
 
 var validate *validator.Validate
@@ -30,8 +28,6 @@ type noteList struct {
 
 func InitFieldValidator() {
 
-	// validator.WithRequiredStructEnabled() argument will be default in
-	// validator v12
 	validate = validator.New(validator.WithRequiredStructEnabled())
 
 }
@@ -41,44 +37,53 @@ Create a new note.
 */
 func CreateNote(c *gin.Context) {
 
-	filename := c.PostForm("newNoteName")
+	noteName := c.PostForm("newNoteName")
 
-	if !(validateFilename(filename)) {
+	if !(validateFilename(noteName)) {
 		c.IndentedJSON(
 			http.StatusBadRequest,
 			errorMessage{Message: "Invalid filename"},
 		)
-		fmt.Print("Invalid Filename!")
 		return
 	}
 
-	path := notesDir + "/" + c.GetString("username") + "/" + filename
+	username := c.GetString("username")
 
-	err := os.WriteFile(path, []byte(""), 0666)
+	err := filesystem.CreateNewEmptyNote(username, noteName)
+
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusInternalServerError,
-			errorMessage{Message: "Failed to create file."},
+			errorMessage{Message: "Failed to create new empty note."},
+		)
+		return
+	}
+
+	noteTiles, err := filesystem.GetUsersNoteTitles(username)
+
+	if err != nil {
+		c.IndentedJSON(
+			http.StatusInternalServerError,
+			errorMessage{Message: "Failed to get note titles for user."},
 		)
 		return
 	}
 
 	context := noteList{
-		FileNames: getFileListForUser(c.GetString("username")),
+		FileNames: noteTiles,
 	}
 
 	c.HTML(http.StatusOK, "noteList.html", context)
 
 }
 
-/*
-Get a single note by id.
-*/
-func GetNoteByFilename(c *gin.Context) {
+func GetNoteRenderedMarkdown(c *gin.Context) {
 
-	var path = notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
+	username := c.GetString("username")
+	noteName := c.Param("filename")
 
-	content, err := os.ReadFile(path)
+	content, err := filesystem.GetNoteContent(username, noteName)
+
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusNotFound,
@@ -88,21 +93,20 @@ func GetNoteByFilename(c *gin.Context) {
 	}
 
 	var singleNote = models.Note{
-		FileName: c.Param("filename"),
-		Content:  string(content),
+		FileName: noteName,
+		Content:  content,
 	}
 
 	c.HTML(http.StatusOK, "notePreview.html", singleNote)
 }
 
-/*
-Full page view of a single note, no editor.
-*/
 func GetFullPageNoteView(c *gin.Context) {
 
-	var path = notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
+	username := c.GetString("username")
+	noteName := c.Param("filename")
 
-	content, err := os.ReadFile(path)
+	content, err := filesystem.GetNoteContent(username, noteName)
+
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusNotFound,
@@ -112,22 +116,21 @@ func GetFullPageNoteView(c *gin.Context) {
 	}
 
 	var singleNote = models.Note{
-		FileName: c.Param("filename"),
-		Content:  string(content),
+		FileName: noteName,
+		Content:  content,
 	}
 
-	c.HTML(http.StatusFound, "fullpagenoteview.html", singleNote)
+	c.HTML(http.StatusOK, "fullpagenoteview.html", singleNote)
 
 }
 
-/*
-Get the editor view and populate it with data from filename.
-*/
 func GetEditor(c *gin.Context) {
 
-	var path = notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
+	username := c.GetString("username")
+	noteName := c.Param("filename")
 
-	content, err := os.ReadFile(path)
+	content, err := filesystem.GetNoteContent(username, noteName)
+
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusNotFound,
@@ -137,36 +140,45 @@ func GetEditor(c *gin.Context) {
 	}
 
 	var singleNote = models.Note{
-		FileName: c.Param("filename"),
-		Content:  strings.TrimSpace(string(content)),
+		FileName: noteName,
+		Content:  content,
 	}
 
 	c.HTML(http.StatusOK, "editor.html", singleNote)
+
 }
 
-/*
-Returns a list of the titles of a single users notes.
-*/
-func GetAllNotesForUser(c *gin.Context) {
+func GetNotesPage(c *gin.Context) {
+
+	username := c.GetString("username")
+	
+	noteTiles, err := filesystem.GetUsersNoteTitles(username)
+
+	if err != nil {
+		c.IndentedJSON(
+			http.StatusInternalServerError,
+			errorMessage{Message: "Failed to get note titles for user."},
+		)
+		return
+	}
 
 	context := notesPageContext{
-		Username:  c.GetString("username"),
-		FileNames: getFileListForUser(c.GetString("username")),
+		Username:  username,
+		FileNames: noteTiles,
 	}
 
 	c.HTML(http.StatusFound, "notes.html", context)
 
 }
 
-/*
-Update an existing note.
-*/
 func UpdateNote(c *gin.Context) {
 
-	path := notesDir + "/" + c.GetString("username") + "/" + c.Param("filename")
-	content := strings.TrimSpace(c.PostForm("editor"))
+	username := c.GetString("username")
+	noteName := c.Param("filename")
+	content := c.PostForm("editor")
 
-	err := os.WriteFile(path, []byte(content), 0666)
+	err := filesystem.UpdateNoteContent(username, noteName, content)
+
 	if err != nil {
 		c.IndentedJSON(
 			http.StatusInternalServerError,
@@ -175,7 +187,12 @@ func UpdateNote(c *gin.Context) {
 		return
 	}
 
-	c.Redirect(http.StatusFound, "/notes/fullpagenoteview/"+c.Param("filename"))
+	var singleNote = models.Note{
+		FileName: noteName,
+		Content:  content,
+	}
+
+	c.HTML(http.StatusOK, "fullpagenoteview.html", singleNote)
 
 }
 
@@ -204,23 +221,7 @@ func DeleteNote(c *gin.Context) {
 /*
 Get filenames of all a given users notes.
 */
-func getFileListForUser(username string) []string {
 
-	fmt.Print(notesDir + "/" + username)
-
-	files, err := ioutil.ReadDir(notesDir + "/" + username)
-	if err != nil {
-		panic(err)
-	}
-
-	var filenames []string
-
-	for _, file := range files {
-		filenames = append(filenames, file.Name())
-	}
-
-	return filenames
-}
 
 func getDataDir() string {
 	dataDir, ok := os.LookupEnv("DATA_DIR")

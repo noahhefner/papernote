@@ -1,5 +1,4 @@
-<div id="rendered" class="rendered"></div>
 <script>
   var markdown = "{{ .Content }}";
-  document.getElementById("rendered").innerHTML = marked.parse(markdown);
+  document.getElementById("preview").innerHTML = marked.parse(markdown);
 </script>

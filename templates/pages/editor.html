@@ -28,8 +28,9 @@
           <form
             method="post"
             action="/notes/{{ .FileName }}"
-            hx-include="[name='editor']"
+            hx-include="#editor"
             class="form-save-button"
+            hx-boost="true"
           >
             <input
               hx-trigger="click"

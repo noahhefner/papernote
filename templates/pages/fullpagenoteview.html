@@ -32,9 +32,13 @@
           </a>
         </div>
       </div>
-      <div class="note-preview-wrapper">
-        {{ template "notePreview.html" . }}
+      <div id="note-preview-wrapper" class="note-preview-wrapper">
+        
       </div>
     </main>
+    <script>
+      var markdown = "{{ .Content }}";
+      document.getElementById("note-preview-wrapper").innerHTML = marked.parse(markdown);
+    </script>    
   </body>
 </html>
