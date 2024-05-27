@@ -1,0 +1,47 @@
+:root {
+  --header-height: 64px;
+  --footer-height: 16px;
+}
+
+.pn-list-group ul, li {
+    border-radius: 0.25rem !important;
+}
+
+.pn-list-group p {
+    margin-left: 4px;
+    transition: padding-left 0.3s ease;
+}
+
+.pn-list-group i {
+    transition: opacity 0.3s ease;
+    margin: 0 4px;
+}
+
+.pn-list-group li:hover i {
+    opacity: 1;
+}
+
+.pn-list-group li:not(:hover) i {
+    opacity: 0;
+}
+
+.pn-header {
+    height: var(--header-height);
+}
+
+.pn-footer {
+    height: var(--footer-height)
+}
+
+.pn-main {
+    height: calc(100% - var(--header-height) - var(--footer-height));
+}
+
+.pn-left-border {
+    border-left: 1px solid var(--bs-border-color);
+}
+
+.col-constrained-height {
+    max-height: 100%;
+    overflow-y: scroll;
+}

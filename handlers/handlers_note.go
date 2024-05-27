@@ -167,7 +167,7 @@ func GetNotesPage(c *gin.Context) {
 		FileNames: noteTiles,
 	}
 
-	c.HTML(http.StatusFound, "notes.html", context)
+	c.HTML(http.StatusFound, "newNotePage.html", context)
 
 }
 
@@ -187,12 +187,7 @@ func UpdateNote(c *gin.Context) {
 		return
 	}
 
-	var singleNote = models.Note{
-		FileName: noteName,
-		Content:  content,
-	}
-
-	c.HTML(http.StatusOK, "fullpagenoteview.html", singleNote)
+	c.Redirect(http.StatusSeeOther, "/notes/fullpagenoteview/" + noteName)
 
 }
 

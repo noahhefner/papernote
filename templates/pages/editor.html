@@ -6,16 +6,9 @@
     <title>{{ .FileName }}</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
-    <link rel="stylesheet" type="text/css" href="/static/css/editor.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/grid.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/common.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="/static/css/fullpagenoteview.css"
-    />
+    <link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
   </head>
-  <body>
+  <body hx-boost="true">
     <div class="note-filename-container" id="filename-container">
       <h1 id="filename">{{ .FileName }}</h1>
     </div>
@@ -25,21 +18,17 @@
           <a href="/notes">
             <img src="/static/img/home.svg" alt="home_icon" />
           </a>
-          <form
-            method="post"
-            action="/notes/{{ .FileName }}"
-            hx-include="#editor"
-            class="form-save-button"
-            hx-boost="true"
-          >
             <input
+              hx-post="/notes/{{ .FileName }}"
+              hx-include="#editor"
               hx-trigger="click"
+              hx-target="body"
+              hx-push-url="true"
               type="image"
               src="/static/img/save.svg"
               name="save"
               id="save"
             />
-          </form>
         </div>
       </div>
       <div class="writing-wrapper">
